@@ -1,0 +1,10 @@
+<md-card>
+    <md-card-header>
+        <md-card-title>{{role.name}}</md-card-title>
+    </md-card-header>
+    <img md-card-image *ngIf="role.imageUrl" [src]="role.imageUrl">
+    <md-spinner *ngIf="!role.imageUrl"></md-spinner>
+    <md-card-actions>
+        <button (click)="openZoom()"md-button>Voir</button>
+    </md-card-actions>
+</md-card>

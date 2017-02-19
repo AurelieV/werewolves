@@ -1,0 +1,9 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/core/theming/prebuilt/deeppurple-amber.scss';
+
+.cdk-overlay-dark-backdrop {
+    background: black;
+    &.cdk-overlay-dark-backdrop {
+        opacity: 1;
+    }
+}
