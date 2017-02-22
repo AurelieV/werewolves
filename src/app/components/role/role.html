@@ -1,10 +1,5 @@
-<md-card>
-    <md-card-header>
-        <md-card-title>{{role.name}}</md-card-title>
-    </md-card-header>
-    <img md-card-image *ngIf="role.imageUrl" [src]="role.imageUrl">
-    <md-spinner *ngIf="!role.imageUrl"></md-spinner>
-    <md-card-actions>
-        <button (click)="openZoom()"md-button>Voir</button>
-    </md-card-actions>
-</md-card>
+<span class="title">{{role.name}}</span>
+<div class="image-container">
+    <img md-card-image [src]="role.image">
+</div>
+<button (click)="openZoom()" md-button>Afficher</button>

@@ -1,6 +1,4 @@
-import { Component, Input, Inject, OnInit } from "@angular/core";
-import { FirebaseApp } from 'angularfire2';
-import * as firebase from 'firebase';
+import { Component, Input, Inject } from "@angular/core";
 import { MdDialog, MdDialogRef } from '@angular/material';
 
 import { RoleZoomComponent } from './zoom';
@@ -11,19 +9,10 @@ import { Role } from "../../model";
     templateUrl: './role.html',
     styleUrls: [ 'role.scss' ]
 })
-export class RoleComponent implements OnInit {
+export class RoleComponent {
     @Input() role: Role;
-    storageRef: firebase.storage.Reference;
 
-    constructor(@Inject(FirebaseApp) firebaseApp: firebase.app.App, private dialog: MdDialog) {
-        this.storageRef = firebaseApp.storage().ref()
-    }
-
-    ngOnInit() {
-        this.storageRef.child(this.role.image)
-            .getDownloadURL()
-            .then(url => this.role.imageUrl = url)
-    }
+    constructor(private dialog: MdDialog) {}
 
     openZoom() {
         const zoom = this.dialog.open(RoleZoomComponent);

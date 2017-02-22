@@ -1,8 +1,7 @@
 import { Component, Inject } from '@angular/core';
-import { AngularFire, FirebaseListObservable, FirebaseApp } from 'angularfire2';
-import * as firebase from 'firebase';
 
 import { Role } from "./model";
+import { roles } from "./data";
 
 @Component({
   selector: 'app-root',
@@ -10,9 +9,5 @@ import { Role } from "./model";
   styleUrls: [ './app.scss' ]
 })
 export class AppComponent {
-  roles: FirebaseListObservable<Role[]>;
-
-  constructor(af: AngularFire) {
-    this.roles = af.database.list('/roles')
-  }
+  roles: Role[] = roles;
 }

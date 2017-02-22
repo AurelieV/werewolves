@@ -3,8 +3,8 @@ import { Component, Input } from "@angular/core";
 import { Role } from "../../model";
 
 @Component({
-    template: `<img [src]="role.imageUrl">`,
-    styles: [ `` ]
+    templateUrl: './zoom.html' ,
+    styleUrls: [ 'zoom.scss' ]
 })
 export class RoleZoomComponent {
     @Input() role: Role; 

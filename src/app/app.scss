@@ -2,3 +2,11 @@
     display: flex;
     flex-wrap: wrap;
 }
+
+role:not(first-child) {
+    margin-left: 10px;
+}
+
+role {
+    margin-bottom: 10px;
+}
