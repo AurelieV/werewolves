@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { NgRedux, select } from "@angular-redux/store";
 import { Observable } from 'rxjs/Observable';
+import { MdDialog, MdDialogRef } from '@angular/material';
 
 import { Player, Role } from '../../model';
 import { IAppState, actions } from '../../store';
+import { RoleZoomComponent } from '../role/zoom';
 
 @Component({
     selector: "game",
@@ -17,7 +19,7 @@ export class GameComponent {
     availableRoles: Role[] = [];
     noDistributedRoles: Role[] = [];
     
-    constructor(private ngRedux: NgRedux<IAppState>) {
+    constructor(private ngRedux: NgRedux<IAppState>, private dialog: MdDialog) {
         this.players$.subscribe(players => {
             this.players = players;
             this.setNoDistributedRoles();
@@ -37,6 +39,11 @@ export class GameComponent {
             roles.splice(index, 1);
         })
         this.noDistributedRoles = roles;
+    }
+
+    openZoom(role: Role) {
+        const zoom = this.dialog.open(RoleZoomComponent);
+        zoom.componentInstance.role = role;
     }
 
     closeGame() {

@@ -4,14 +4,18 @@
 </md-toolbar>
 
 <div class="content">
-    <div class="player" *ngFor="let player of players">
-        <span>{{player.name}}</span>
-        <span>{{player.role.name}}</span>
-    </div>
-    <div class="no-distributed" *ngIf="noDistributedRoles.length">
-        <p>Rôles non distribués</p>
-        <ul>
-            <li *ngFor="let role of noDistributedRoles">{{role.name}}</li>
-        </ul>
-    </div>
+    <md-list>
+        <h3 md-subheader>Joueurs</h3>
+        <md-list-item *ngFor="let player of players">
+            <img md-list-avatar (click)="openZoom(player.role)" [src]="player.role.image">
+            <h4 md-line>{{player.name}}</h4>
+            <p md-line>{{player.role.name}}</p>
+        </md-list-item>
+        <md-divider></md-divider>
+        <h3 *ngIf="noDistributedRoles.length" md-subheader>Rôles non distribués</h3>
+        <md-list-item *ngFor="let role of noDistributedRoles">
+            <img md-list-avatar (click)="openZoom(role)" [src]="role.image">
+            <h4 md-line>{{role.name}}</h4>
+        </md-list-item>
+    </md-list>
 </div>
