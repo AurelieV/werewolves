@@ -7,3 +7,22 @@
         opacity: 1;
     }
 }
+
+body {
+    margin: 0;
+}
+
+md-toolbar.header-bar {
+    position: fixed;
+    z-index: 200;
+    .title {
+        flex: 1;
+    }
+    button {
+        margin-left: 5px;
+    }
+}
+
+.content {
+    padding-top: 60px;
+}

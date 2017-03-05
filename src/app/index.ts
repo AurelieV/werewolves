@@ -10,9 +10,13 @@ import { NgReduxModule, NgRedux } from '@angular-redux/store';
 import { AppComponent } from './app';
 import { RoleComponent } from './components/role';
 import { RoleZoomComponent } from './components/role/zoom';
+import { SetRolesComponent } from './components/setRoles';
+import { SetPlayersComponent } from './components/setPlayers';
+import { AttributeRolesComponent } from './components/attributeRoles';
+import { GameComponent } from './components/game';
 
-// Actions
-import { PlayersActions } from './actions/players';
+// Services
+import { PersistStoreService } from './store/persistService';
 
 // Config
 import { config } from "../config/firebase";
@@ -24,7 +28,11 @@ import { IAppState, rootReducer } from './store';
   declarations: [
     AppComponent,
     RoleComponent,
-    RoleZoomComponent
+    RoleZoomComponent,
+    SetRolesComponent,
+    SetPlayersComponent,
+    AttributeRolesComponent,
+    GameComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +43,7 @@ import { IAppState, rootReducer } from './store';
     NgReduxModule
   ],
   providers: [
-      PlayersActions
+    PersistStoreService
   ],
   entryComponents: [
     RoleZoomComponent
@@ -43,7 +51,9 @@ import { IAppState, rootReducer } from './store';
   bootstrap: [ AppComponent ]
 })
 export class AppModule {
-    constructor(private ngRedux: NgRedux<IAppState>) {
-        this.ngRedux.configureStore(rootReducer, { players: [] });
+    constructor(private ngRedux: NgRedux<IAppState>, private persist: PersistStoreService) {
+        const persistState = persist.getPersistState(); 
+        this.ngRedux.configureStore(rootReducer, persistState);
+        persist.start();
     }
 }

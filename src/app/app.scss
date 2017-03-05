@@ -1,12 +1,7 @@
-.roles {
+.center {
     display: flex;
-    flex-wrap: wrap;
-}
-
-role:not(first-child) {
-    margin-left: 10px;
-}
-
-role {
-    margin-bottom: 10px;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0; bottom: 0; left: 0; right: 0;
 }

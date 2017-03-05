@@ -1,0 +1,23 @@
+.hint {
+    font-style: italic;
+}
+.bold {
+    font-weight: bold;
+}
+
+.content {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.assignations {
+    padding: 0;
+    margin: 0;
+}
+
+.assignation {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}

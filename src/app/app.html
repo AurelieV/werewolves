@@ -1,4 +1,7 @@
-<h1>Roles</h1>
-<div class="roles">
-  <role *ngFor="let role of roles" [role]="role"></role>
+<div class="center" *ngIf="gameState === 'none'">
+  <button md-raised-button color="primary" (click)="startGame()">Nouvelle partie</button>
 </div>
+<set-roles *ngIf="gameState === 'setRoles'"></set-roles>
+<set-players *ngIf="gameState === 'setPlayers'"></set-players>
+<attribute-roles *ngIf="gameState === 'attributeRoles'"></attribute-roles>
+<game *ngIf="gameState === 'inProgress'"></game>

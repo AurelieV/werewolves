@@ -1,0 +1,44 @@
+<md-toolbar class="header-bar" color="primary">
+    <span class="title">Choix roles</span>
+    <button md-raised-button color="accent" (click)="cancel()">Annuler</button>
+    <button md-raised-button color="accent" (click)="confirm()">Valider</button>
+</md-toolbar>
+
+<div class="roles content">
+    <div class="role" *ngFor="let role of roles">
+        <span class="role-title">{{role.name}}</span>
+        <div class="role-content">
+            <img md-card-image [src]="role.image">
+            <div class="counter">{{counts[role.id] || 0}}</div>
+            <div class="modifiers">
+                <button 
+                    md-raised-button
+                    (click)="increment(role.id)"
+                    color="primary"
+                    class="modifier">+</button>
+                <button 
+                    md-raised-button
+                    (click)="decrement(role.id)"
+                    color="primary"
+                    class="modifier" 
+                    [disabled]="!counts[role.id]">-</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<template #confirmation>
+    <h1 md-dialog-title>Confirmation</h1>
+    <div md-dialog-content>
+        <h2>{{cardsNumber}} cartes disponibles</h2>
+        <ul>
+            <li *ngFor="let roleCount of rolesCount">
+                {{roleCount.count}} {{roleCount.role.name}}
+            </li>
+        </ul>
+    </div>
+    <div md-dialog-actions>
+        <button md-button color="warn" (click)="cancelConfirm()">Annuler</button>
+        <button md-button color="primary" (click)="validate()">Valider</button>
+    </div>
+</template>

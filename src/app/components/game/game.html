@@ -1,0 +1,17 @@
+<md-toolbar class="header-bar" color="primary">
+    <span class="title">Game en cours</span>
+    <button md-raised-button color="accent" (click)="closeGame()">Terminer</button>
+</md-toolbar>
+
+<div class="content">
+    <div class="player" *ngFor="let player of players">
+        <span>{{player.name}}</span>
+        <span>{{player.role.name}}</span>
+    </div>
+    <div class="no-distributed" *ngIf="noDistributedRoles.length">
+        <p>Rôles non distribués</p>
+        <ul>
+            <li *ngFor="let role of noDistributedRoles">{{role.name}}</li>
+        </ul>
+    </div>
+</div>

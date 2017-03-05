@@ -2,158 +2,163 @@ import { Role } from "./model";
 
 export const roles: Role[] = [
     {
-        "id": 1,
+        "id": 0,
         "name": "Abominable Sectaire",
         "image": "assets/cards/abominable_sectaire.png"
     },
     {
-        "id": 2,
+        "id": 1,
         "name": "Ancien",
         "image": "assets/cards/ancien.png"
     },
     {
-        "id": 3,
+        "id": 2,
         "name": "Ange",
         "image": "assets/cards/ange.png"
     },
     {
-        "id": 4,
+        "id": 3,
         "name": "Bouc émissaire",
         "image": "assets/cards/bouc_emissaire.png"
     },
     {
-        "id": 5,
+        "id": 4,
         "name": "Chamane",
         "image": "assets/cards/chamane.png"
     },
     {
-        "id": 6,
+        "id": 5,
         "name": "Chasseur",
         "image": "assets/cards/chasseur.png"
     },
     {
-        "id": 7,
+        "id": 6,
         "name": "Chevalier",
         "image": "assets/cards/chevalier.png"
     },
     {
-        "id": 8,
+        "id": 7,
         "name": "Chien-Loup",
         "image": "assets/cards/chien_loup.png"
     },
     {
-        "id": 9,
+        "id": 8,
         "name": "Comédien",
         "image": "assets/cards/comedien.png"
     },
     {
-        "id": 10,
+        "id": 9,
         "name": "Corbeau",
         "image": "assets/cards/corbeau.png"
     },
     {
-        "id": 11,
+        "id": 10,
         "name": "Cupidon",
         "image": "assets/cards/cupidon.png"
     },
     {
-        "id": 12,
+        "id": 11,
         "name": "Deux soeurs",
         "image": "assets/cards/deux_soeurs.png"
     },
     {
-        "id": 13,
+        "id": 12,
         "name": "Enfant sauvage",
         "image": "assets/cards/enfant_sauvage.png"
     },
     {
-        "id": 14,
+        "id": 13,
         "name": "Garde champètre",
         "image": "assets/cards/garde_champetre.png"
     },
     {
-        "id": 15,
+        "id": 14,
         "name": "Grand méchant loup",
         "image": "assets/cards/grand_mechant_loup.png"
     },
     {
-        "id": 16,
+        "id": 15,
         "name": "Idiot du village",
         "image": "assets/cards/idiot_village.png"
     },
     {
-        "id": 17,
+        "id": 16,
         "name": "Infame père des loups",
         "image": "assets/cards/infame_pere_loups.png"
     },
     {
-        "id": 18,
+        "id": 17,
         "name": "Joueur de flûte",
         "image": "assets/cards/joueur_flute.png"
     },
     {
-        "id": 19,
+        "id": 18,
         "name": "Juge bègue",
         "image": "assets/cards/juge_begue.png"
     },
     {
-        "id": 20,
+        "id": 19,
         "name": "Loup garou blanc",
         "image": "assets/cards/loup_garou_blanc.png"
     },
     {
-        "id": 21,
+        "id": 20,
         "name": "Loup garou",
         "image": "assets/cards/loup_garou.png"
     },
     {
-        "id": 22,
+        "id": 21,
         "name": "Montreur d'ours",
         "image": "assets/cards/montreur_ours.png"
     },
     {
-        "id": 23,
+        "id": 22,
         "name": "Petite fille",
         "image": "assets/cards/petite_fille.png"
     },
     {
-        "id": 24,
+        "id": 23,
         "name": "Pyromane",
         "image": "assets/cards/pyromane.png"
     },
     {
-        "id": 25,
+        "id": 24,
         "name": "Renard",
         "image": "assets/cards/renard.png"
     },
     {
-        "id": 26,
+        "id": 25,
         "name": "Salvateur",
         "image": "assets/cards/salvateur.png"
     },
     {
-        "id": 27,
+        "id": 26,
         "name": "Servante",
         "image": "assets/cards/servante.png"
     },
     {
-        "id": 28,
+        "id": 27,
         "name": "Simple Villageois",
         "image": "assets/cards/simple_villageois.png"
     },
     {
-        "id": 29,
+        "id": 28,
         "name": "Sorcière",
         "image": "assets/cards/sorciere.png"
     },
     {
-        "id": 30,
+        "id": 29,
         "name": "Trois frères",
         "image": "assets/cards/trois_freres.png"
     },
     {
-        "id": 31,
+        "id": 30,
         "name": "Voleur",
         "image": "assets/cards/voleur.png"
+    },
+    {
+        "id": 31,
+        "name": "Voyante",
+        "image": "assets/cards/voyante.jpg"
     }
 ];

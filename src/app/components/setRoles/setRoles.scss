@@ -1,0 +1,44 @@
+.roles {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.role {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.role-title {
+    font-weight: bold;
+    text-align: center;
+}
+
+.role-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 100px;
+    margin-top: 10px;
+}
+.role-content img {
+    width: 70px;
+    height: 70px;
+}
+.counter {
+    font-size: 30px;
+    font-weight: bold;
+}
+.modifiers {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.modifier {
+    min-width: initial;
+    height: 40px;
+    margin-bottom: 10px;
+}

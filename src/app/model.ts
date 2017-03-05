@@ -3,3 +3,8 @@ export interface Role {
   name: string;
   image: string;
 }
+
+export interface Player {
+  name: string;
+  role: Role;
+}

@@ -1,0 +1,22 @@
+<md-toolbar class="header-bar" color="primary">
+    <span class="title">Joueurs</span>
+    <button md-raised-button color="accent" (click)="cancel()">Annuler</button>
+    <button md-raised-button color="accent" (click)="validate()">Valider</button>
+</md-toolbar>
+
+<div class="players content">
+    <p><span class="bold">{{players.length}}</span> cartes disponibles<p>
+    <p class="hint"> Laissez un nom vide pour ne pas distribuer de carte. </p>
+    <form>
+        <ul>
+            <li *ngFor="let player of players; let i = index;">
+                <md-input-container><input 
+                        [name]="'player-' + i" 
+                        mdInput 
+                        placeholder="Nom du joueur {{i + 1}}"
+                        [(ngModel)]="player.name">
+                </md-input-container>
+            </li>
+        </ul>
+    </form>
+</div>

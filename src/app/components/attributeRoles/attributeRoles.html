@@ -1,0 +1,29 @@
+<md-toolbar class="header-bar" color="primary">
+    <span class="title">Distrib. rôles</span>
+    <button md-raised-button color="accent" (click)="cancel()">Annuler</button>
+    <button md-raised-button color="accent" (click)="validate()">Valider</button>
+</md-toolbar>
+
+<div class="content">
+    <p><span class="bold">{{availableCards.length}}</span> cartes disponibles<p>
+    <p class="hint"> Les cartes non attribuées seront distribuées au hasard</p>
+    <form>
+        <ul class="assignations">
+            <li class="assignation" *ngFor="let assignation of assignations;">
+                <span>{{assignation.player.name}}</span>
+                <md-select 
+                    (change)="onSelectChange()"
+                    [(ngModel)]="assignation.cardIndex"
+                    [name]="'assignation-' + i">
+                    <md-option [value]="-1">Au hasard</md-option>
+                    <md-option 
+                        *ngFor="let card of cards"
+                        [value]="card.cardIndex"
+                        [disabled]="card.taken && card.cardIndex !== assignation.cardIndex">
+                        {{card.role.name}}
+                    </md-option>
+                </md-select>
+            </li>
+        </ul>
+    </form>
+</div>
