@@ -6,7 +6,7 @@
 <div class="content">
     <md-list>
         <h3 md-subheader>Joueurs</h3>
-        <md-list-item *ngFor="let player of players; let i = index;" class="player">
+        <md-list-item *ngFor="let player of players; let i = index;" class="player" [class.dead]="player.dead">
             <img md-list-avatar (click)="openZoom(player.role)" [src]="player.role.image">
             <h4 md-line>{{player.name}}</h4>
             <p md-line>{{player.role.name}}</p>

@@ -8,3 +8,7 @@
 .status:not(:first-child) {
     margin-left: 10px;
 }
+
+.dead {
+    opacity: 0.8;
+}
