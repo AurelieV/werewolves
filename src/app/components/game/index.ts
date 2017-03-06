@@ -3,9 +3,13 @@ import { NgRedux, select } from "@angular-redux/store";
 import { Observable } from 'rxjs/Observable';
 import { MdDialog, MdDialogRef } from '@angular/material';
 
-import { Player, Role } from '../../model';
+import { Player, Role, StatusValue, PlayerStatus } from '../../model';
 import { IAppState, actions } from '../../store';
 import { RoleZoomComponent } from '../role/zoom';
+
+interface PlayerWithActions extends Player {
+    actions: PlayerStatus[];
+}
 
 @Component({
     selector: "game",
@@ -15,35 +19,62 @@ import { RoleZoomComponent } from '../role/zoom';
 export class GameComponent {
     @select() players$: Observable<Player[]>;
     @select() availableRoles$: Observable<Role[]>;
-    players: Player[] = [];
+    @select() noDistributedRoles$: Observable<Role[]>;
+
+    players: PlayerWithActions[] = [];
     availableRoles: Role[] = [];
     noDistributedRoles: Role[] = [];
     
     constructor(private ngRedux: NgRedux<IAppState>, private dialog: MdDialog) {
         this.players$.subscribe(players => {
-            this.players = players;
-            this.setNoDistributedRoles();
+            this.players = players.map(p => Object.assign({}, p, {actions: this.getActions(p)}))
         });
-        this.availableRoles$.subscribe(roles => {
-            this.availableRoles = roles;
-            this.setNoDistributedRoles();
-        });
-    }
-
-    setNoDistributedRoles() {
-        if (this.players.length === 0) return;
-        if (this.availableRoles.length === 0) return;
-        const roles = Array.from(this.availableRoles);
-        this.players.forEach(p => {
-            const index = roles.findIndex(r => r.id === p.role.id);
-            roles.splice(index, 1);
-        })
-        this.noDistributedRoles = roles;
+        this.availableRoles$.subscribe(roles => this.availableRoles = roles);
+        this.noDistributedRoles$.subscribe(roles => this.noDistributedRoles = roles);
     }
 
     openZoom(role: Role) {
         const zoom = this.dialog.open(RoleZoomComponent);
         zoom.componentInstance.role = role;
+    }
+
+    kill(index: number) {
+        this.ngRedux.dispatch({ type: actions.UPDATE_PLAYER, payload: {
+            index,
+            change: { dead: true }
+        }});
+    }
+
+    resurrect(index: number) {
+        this.ngRedux.dispatch({ type: actions.UPDATE_PLAYER, payload: {
+            index,
+            change: { dead: false }
+        }});
+    }
+
+    getActions(player: Player): PlayerStatus[] {
+        let result: PlayerStatus[] = [];
+        const current = player.status.map(s => s.value.name);
+        player.role.ownStatus.forEach(s => {
+            result = result.concat(
+                s.values
+                .filter(v => v.actionName && current.indexOf(v.name) === -1)
+                .map(v => ({ status: s, value: v }))
+            );
+        });
+
+        return result;
+    }
+
+    doAction(player: Player, index: number, status: PlayerStatus) {
+        const current = player.status.map(s => s.value.name);
+        const otherValues = status.status.values.map(s => s.name);
+        const playerStatus = player.status.filter(s => otherValues.indexOf(s.value.name) === -1);
+        playerStatus.push(status);
+        this.ngRedux.dispatch({ type: actions.UPDATE_PLAYER, payload: {
+            index,
+            change: { status: playerStatus } 
+        }});
     }
 
     closeGame() {

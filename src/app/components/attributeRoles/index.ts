@@ -56,11 +56,24 @@ export class AttributeRolesComponent {
             this.onSelectChange();
         });
         const players = this.assignations.map(a => Object.assign(
-            {}, 
+            {},
             a.player,
             { role: this.cards[a.cardIndex].role }
         ));
+        players.forEach((p: Player) => {
+            if (p.role.ownStatus.length > 0) {
+                p.status = [];
+                p.role.ownStatus.forEach(status => p.status.push({
+                    status,
+                    value: status.values[0]
+                }));
+            }
+        })
         this.ngRedux.dispatch({ type: actions.SET_PLAYERS, payload: players });
+        this.ngRedux.dispatch({
+            type: actions.SET_NO_DISTRIBUTED_ROLES,
+            payload: this.availableCards.map(c => c.role)
+        });
         this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "inProgress" });
     }
 

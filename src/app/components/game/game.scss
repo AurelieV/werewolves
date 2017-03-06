@@ -1,0 +1,10 @@
+.dead-status {
+    text-transform: capitalize;
+    color: red;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.status:not(:first-child) {
+    margin-left: 10px;
+}

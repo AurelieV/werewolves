@@ -6,10 +6,26 @@
 <div class="content">
     <md-list>
         <h3 md-subheader>Joueurs</h3>
-        <md-list-item *ngFor="let player of players">
+        <md-list-item *ngFor="let player of players; let i = index;" class="player">
             <img md-list-avatar (click)="openZoom(player.role)" [src]="player.role.image">
             <h4 md-line>{{player.name}}</h4>
             <p md-line>{{player.role.name}}</p>
+            <md-icon 
+                class="status"
+                *ngFor="let status of player.status"
+                [ngClass]="status.value.iconValue.class">{{status.value.iconValue.icon}}</md-icon>
+            <span class="dead-status" *ngIf="player.dead">DEAD</span>
+            <button md-icon-button [mdMenuTriggerFor]="menu">
+                <md-icon>more_vert</md-icon>
+            </button>
+            <md-menu #menu="mdMenu">
+                <button md-menu-item *ngIf="!player.dead" (click)="kill(i)">Tuer</button>
+                <button md-menu-item *ngIf="player.dead" (click)="resurrect(i)">Ressusciter</button>
+                <button md-menu-item 
+                    *ngFor="let status of player.actions"
+                    (click)="doAction(player, i, status)">{{status.value.actionName}}
+                </button>
+            </md-menu>
         </md-list-item>
         <md-divider></md-divider>
         <h3 *ngIf="noDistributedRoles.length" md-subheader>Rôles non distribués</h3>

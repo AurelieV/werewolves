@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { NgRedux, select } from "@angular-redux/store";
 import { Observable } from 'rxjs/Observable';
-
+import 'rxjs/add/observable/throw';
 import { Role } from "./model";
 import { roles } from "./data";
 import { IAppState, GameState, actions } from "./store";

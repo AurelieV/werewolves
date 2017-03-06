@@ -16,7 +16,7 @@ export class SetPlayersComponent {
 
     constructor(private ngRedux: NgRedux<IAppState>) {
         this.availableRoles$.subscribe(roles => {
-            this.players = roles.map(r => ({ name: "", role: null }));
+            this.players = roles.map(r => ({ name: "", role: null, dead: false, status: [] }));
         });
     }
 
