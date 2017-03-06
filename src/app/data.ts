@@ -221,9 +221,10 @@ export const roles: Role[] = [
                 "values": [
                     {
                         "name": "Potion noire non utilisée",
+                        "actionName": "Annuler utilisation potion noire",
                         "iconValue": {
                             "icon": "thumb_down",
-                            "class": "black"
+                            "class": "black",
                         }
                     },
                     {
@@ -241,6 +242,7 @@ export const roles: Role[] = [
                 "values": [
                     {
                         "name": "Potion blanche non utilisée",
+                        "actionName": "Annuler utilisation potion blanche",
                         "iconValue": {
                             "icon": "thumb_up",
                             "class": "green"
