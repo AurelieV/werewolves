@@ -32,12 +32,7 @@ export class GameComponent {
         });
         this.availableRoles$.subscribe(roles => {
             this.availableRoles = roles;
-            this.availableStatus = roles.reduce((acc, r) => {
-                const values = r.othersStatus.reduce((acc, s) => {
-                    return acc.concat(s.values.map(v => ({status: s, value: v})));
-                }, [] as PlayerStatus[]);
-                return acc.concat(values);
-            }, [] as PlayerStatus[]);
+            this.availableStatus = this.getAvailableStatus();
             this.players = this.players.map(p => Object.assign({}, p, {actions: this.getActions(p)}));
         });
         this.noDistributedRoles$.subscribe(roles => this.noDistributedRoles = roles);
@@ -62,28 +57,45 @@ export class GameComponent {
         }});
     }
 
+    getAvailableStatus() {
+        return this.availableRoles
+            .reduce((acc, r) => {
+                const values = r.othersStatus.reduce((acc, s) => {
+                    return acc.concat(s.values.map(v => ({status: s, value: v})));
+                }, [] as PlayerStatus[]);
+                return acc.concat(values);
+            }, [] as PlayerStatus[]);
+    }
+
     getActions(player: Player): PlayerStatus[] {
         let result: PlayerStatus[] = [];
-        const current = player.status.map(s => s.value.name);
+        const currentValues = player.status.map(ps => ps.value.name);
+        const currentStatus = player.status.map(ps => ps.status.name);
         player.role.ownStatus.forEach(s => {
             result = result.concat(
                 s.values
-                .filter(v => v.actionName && current.indexOf(v.name) === -1)
+                .filter(v => {
+                    if (!v.actionName) return false;
+                    if (v.name) return currentValues.indexOf(v.name) === -1;
+                    return currentStatus.indexOf(s.name) > -1;
+                })
                 .map(v => ({ status: s, value: v }))
             );
         });
         result = result.concat(
-            this.availableStatus.filter(v => v.value.actionName && current.indexOf(v.value.name) === -1)
+            this.availableStatus.filter(v => {
+                    if (!v.value.actionName) return false;
+                    if (v.value.name) return currentValues.indexOf(v.value.name) === -1;
+                    return currentStatus.indexOf(v.status.name) > -1;
+                })
         );
 
         return result;
     }
 
     doAction(player: Player, index: number, status: PlayerStatus) {
-        const current = player.status.map(s => s.value.name);
-        const otherValues = status.status.values.map(s => s.name);
-        const playerStatus = player.status.filter(s => otherValues.indexOf(s.value.name) === -1);
-        playerStatus.push(status);
+        const playerStatus = player.status.filter(s => s.status.name !== status.status.name);
+        if (status.value.name) playerStatus.push(status);
         this.ngRedux.dispatch({ type: actions.UPDATE_PLAYER, payload: {
             index,
             change: { status: playerStatus } 

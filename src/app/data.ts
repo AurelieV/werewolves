@@ -87,6 +87,11 @@ export const roles: Role[] = [
                             "icon": "favorite",
                             "class": "red"
                         }
+                    },
+                    {
+                        "name": null,
+                        "actionName": "Ne plus être amoureux",
+                        "iconValue": null
                     }
                 ]
             }
