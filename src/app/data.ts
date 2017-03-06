@@ -76,7 +76,21 @@ export const roles: Role[] = [
         "name": "Cupidon",
         "image": "assets/cards/cupidon.png",
         "ownStatus": [],
-        "othersStatus": []
+        "othersStatus": [
+            {
+                "name": "Amoureux",
+                "values": [
+                    {
+                        "name": "Amoureux",
+                        "actionName": "Rendre amoureux",
+                        "iconValue": {
+                            "icon": "favorite",
+                            "class": "red"
+                        }
+                    }
+                ]
+            }
+        ],
     },
     {
         "id": 11,

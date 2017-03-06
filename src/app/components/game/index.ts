@@ -24,12 +24,22 @@ export class GameComponent {
     players: PlayerWithActions[] = [];
     availableRoles: Role[] = [];
     noDistributedRoles: Role[] = [];
+    availableStatus: PlayerStatus[] = [];
     
     constructor(private ngRedux: NgRedux<IAppState>, private dialog: MdDialog) {
         this.players$.subscribe(players => {
-            this.players = players.map(p => Object.assign({}, p, {actions: this.getActions(p)}))
+            this.players = players.map(p => Object.assign({}, p, {actions: this.getActions(p)}));
         });
-        this.availableRoles$.subscribe(roles => this.availableRoles = roles);
+        this.availableRoles$.subscribe(roles => {
+            this.availableRoles = roles;
+            this.availableStatus = roles.reduce((acc, r) => {
+                const values = r.othersStatus.reduce((acc, s) => {
+                    return acc.concat(s.values.map(v => ({status: s, value: v})));
+                }, [] as PlayerStatus[]);
+                return acc.concat(values);
+            }, [] as PlayerStatus[]);
+            this.players = this.players.map(p => Object.assign({}, p, {actions: this.getActions(p)}));
+        });
         this.noDistributedRoles$.subscribe(roles => this.noDistributedRoles = roles);
     }
 
@@ -62,6 +72,9 @@ export class GameComponent {
                 .map(v => ({ status: s, value: v }))
             );
         });
+        result = result.concat(
+            this.availableStatus.filter(v => v.value.actionName && current.indexOf(v.value.name) === -1)
+        );
 
         return result;
     }
