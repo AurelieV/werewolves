@@ -10,5 +10,11 @@
 }
 
 .dead {
-    opacity: 0.8;
+    * {
+        opacity: 0.5;
+    }
+    .menu-button {
+        opacity: 1;
+        * { opacity: 1; }
+    }
 }

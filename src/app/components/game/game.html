@@ -15,7 +15,7 @@
                 *ngFor="let status of player.status"
                 [ngClass]="status.value.iconValue.class">{{status.value.iconValue.icon}}</md-icon>
             <span class="dead-status" *ngIf="player.dead">DEAD</span>
-            <button md-icon-button [mdMenuTriggerFor]="menu">
+            <button md-icon-button [mdMenuTriggerFor]="menu" class="menu-button">
                 <md-icon>more_vert</md-icon>
             </button>
             <md-menu #menu="mdMenu">
