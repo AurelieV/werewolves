@@ -25,7 +25,7 @@ export class GameComponent {
     availableRoles: Role[] = [];
     noDistributedRoles: Role[] = [];
     availableStatus: PlayerStatus[] = [];
-    
+
     constructor(private ngRedux: NgRedux<IAppState>, private dialog: MdDialog) {
         this.players$.subscribe(players => {
             this.players = players.map(p => Object.assign({}, p, {actions: this.getActions(p)}));
@@ -98,11 +98,15 @@ export class GameComponent {
         if (status.value.name) playerStatus.push(status);
         this.ngRedux.dispatch({ type: actions.UPDATE_PLAYER, payload: {
             index,
-            change: { status: playerStatus } 
+            change: { status: playerStatus }
         }});
     }
 
     closeGame() {
         this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "none" });
+    }
+
+    restartGame() {
+        this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "setRoles"});
     }
 }

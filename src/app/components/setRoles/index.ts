@@ -1,4 +1,4 @@
-import { Component, ViewChild, TemplateRef, Output, EventEmitter } from '@angular/core';
+import { Component, ViewChild, TemplateRef, Output, EventEmitter, OnInit } from '@angular/core';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { NgRedux } from "@angular-redux/store";
 
@@ -16,7 +16,7 @@ interface RoleCount {
     templateUrl: './setRoles.html',
     styleUrls: [ 'setRoles.scss' ]
 })
-export class SetRolesComponent {
+export class SetRolesComponent implements OnInit {
     @Output() closeGame = new EventEmitter();
     @ViewChild("confirmation") confirmationTemplate: TemplateRef<any>;
     roles: Role[] = roles;
@@ -26,6 +26,16 @@ export class SetRolesComponent {
     cardsNumber: number = 0;
 
     constructor(private dialog: MdDialog, private ngRedux: NgRedux<IAppState>) {}
+
+    ngOnInit() {
+        this.ngRedux.select<Role[]>("availableRoles").subscribe(roles => {
+            if (roles.length === 0) return;
+            this.counts = roles.reduce((counts, role) => {
+                counts[role.id] = (counts[role.id] || 0) + 1;
+                return counts;
+            }, {})
+        })
+    }
 
     increment(id: number) {
         const current = this.counts[id] || 0;

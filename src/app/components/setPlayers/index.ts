@@ -17,6 +17,16 @@ export class SetPlayersComponent {
     constructor(private ngRedux: NgRedux<IAppState>) {
         this.availableRoles$.subscribe(roles => {
             this.players = roles.map(r => ({ name: "", role: null, dead: false, status: [] }));
+            this.ngRedux.select<Player[]>("players").subscribe(players => {
+                if (players.length === 0) return;
+                players.forEach((player, index) => {
+                    if (index < this.players.length) {
+                        this.players[index] = Object.assign({}, player)
+                    } else {
+                        this.players.push(Object.assign({}, player));
+                    }
+                });
+            });
         });
     }
 

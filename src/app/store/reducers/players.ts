@@ -1,6 +1,7 @@
 import { actions, GameState } from '../index';
+import { Player } from '../../model';
 
-export function players(state: string[] = [], action: any) {
+export function players(state: Player[] = [], action: any) {
   switch (action.type) {
     case actions.SET_PLAYERS:
       return action.payload;
@@ -8,9 +9,15 @@ export function players(state: string[] = [], action: any) {
       const gameState: GameState = action.payload;
       switch (gameState) {
         case "none":
+          return [];
         case "setRoles":
         case "setPlayers":
-          return [];
+            return state.map(p => ({
+                name: p.name,
+                status: [],
+                dead: false,
+                role: null
+            }));
         default:
           return state;
       }

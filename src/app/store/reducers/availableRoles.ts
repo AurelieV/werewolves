@@ -9,7 +9,6 @@ export function availableRoles(state: Role[] = [], action: any) {
       const gameState: GameState = action.payload;
       switch (gameState) {
         case "none":
-        case "setRoles":
           return [];
         default:
           return state;
