@@ -24,6 +24,8 @@ import { config } from "../config/firebase";
 // Store
 import { IAppState, rootReducer } from './store';
 
+export const currentVersion = "1.0";
+
 @NgModule({
   declarations: [
     AppComponent,

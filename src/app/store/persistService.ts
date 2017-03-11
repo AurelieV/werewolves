@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { NgRedux, select } from '@angular-redux/store';
 
 import { IAppState } from './index';
+import { currentVersion } from '../index';
 
 @Injectable()
 export class PersistStoreService {
@@ -23,14 +24,26 @@ export class PersistStoreService {
         this.noDistributedRoles$.subscribe(roles => {
             localStorage["noDistributedRoles"] = JSON.stringify(roles);
         });
+        localStorage["version"] = currentVersion;
+
     }
 
     getPersistState(): IAppState {
-        return {
-            gameState: localStorage["gameState"] || "none",
-            availableRoles: JSON.parse(localStorage["availableRoles"] || null) || [],
-            players: JSON.parse(localStorage["players"] || null) || [],
-            noDistributedRoles: JSON.parse(localStorage["noDistributedRoles"] || null) || []
-        };
+        const persistStateVersion = localStorage["version"];
+        if (currentVersion === persistStateVersion) {
+            return {
+                gameState: localStorage["gameState"] || "none",
+                availableRoles: JSON.parse(localStorage["availableRoles"] || null) || [],
+                players: JSON.parse(localStorage["players"] || null) || [],
+                noDistributedRoles: JSON.parse(localStorage["noDistributedRoles"] || null) || []
+            };
+        } else {
+            return {
+                gameState: "none",
+                availableRoles: [],
+                players: [],
+                noDistributedRoles: []
+            };
+        }
     }
 }
