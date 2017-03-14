@@ -4,16 +4,16 @@ import { Role, Player } from "../model";
 
 // Reducers
 import { players } from './reducers/players';
-import { availableRoles } from './reducers/availableRoles';
+import { roleIds } from './reducers/roleIds';
 import { gameState } from './reducers/gameState';
-import { noDistributedRoles } from './reducers/noDistributedRoles';
+import { noDistributedRoleIds } from './reducers/noDistributedRoleIds';
 
 export type GameState = "none" | "setRoles" | "setPlayers" | "attributeRoles" | "inProgress";
 export interface IAppState {
     players: Player[];
-    availableRoles: Role[];
+    roleIds: number[];
     gameState: GameState;
-    noDistributedRoles: Role[];
+    noDistributedRoleIds: number[];
 };
 
 export const actions = {
@@ -26,7 +26,7 @@ export const actions = {
 
 export const rootReducer = combineReducers<IAppState>({
     players,
-    availableRoles,
+    roleIds,
     gameState,
-    noDistributedRoles
+    noDistributedRoleIds
 });

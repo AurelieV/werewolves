@@ -20,7 +20,7 @@
                         *ngFor="let card of cards"
                         [value]="card.cardIndex"
                         [disabled]="card.taken && card.cardIndex !== assignation.cardIndex">
-                        {{card.role.name}}
+                        {{roles[card.roleId].name}}
                     </md-option>
                 </md-select>
             </li>

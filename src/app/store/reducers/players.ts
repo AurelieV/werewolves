@@ -14,9 +14,9 @@ export function players(state: Player[] = [], action: any) {
         case "setPlayers":
             return state.map(p => ({
                 name: p.name,
-                status: [],
+                roleId: null,
                 dead: false,
-                role: null
+                statusValueIds: []
             }));
         default:
           return state;

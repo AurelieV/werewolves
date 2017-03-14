@@ -5,13 +5,14 @@ import { MdSelectChange } from '@angular/material';
 
 import { Role, Player } from '../../model';
 import { IAppState, actions } from '../../store';
+import { roles, statuses } from '../../data';
 
 interface Assignation {
     player: Player;
     cardIndex: number;
 }
 interface Card {
-    role: Role;
+    roleId: number;
     cardIndex: number;
     taken: boolean;
 }
@@ -22,20 +23,22 @@ interface Card {
     styleUrls: [ 'attributeRoles.scss' ]
 })
 export class AttributeRolesComponent {
-    @select() availableRoles$: Observable<Role[]>;
+    @select() roleIds$: Observable<number[]>;
     @select() players$: Observable<Player[]>;
+
     assignations: Assignation[] = [];
     cards: Card[] = [];
     availableCards: Card[] = [];
+    roles: Role[] = roles;
 
     constructor(private ngRedux: NgRedux<IAppState>) {
         this.players$.subscribe(players => {
             this.assignations = players.map((p, i) => ({player: p, cardIndex: -1}));
         });
-        this.availableRoles$.subscribe(roles => {
-            this.cards = roles.map((r, i) => ({
-                role: r,
-                cardIndex: i,
+        this.roleIds$.subscribe(roleIds => {
+            this.cards = roleIds.map((id, index) => ({
+                roleId: id,
+                cardIndex: index,
                 taken: false
             }));
             this.availableCards = Array.from(this.cards);
@@ -58,21 +61,20 @@ export class AttributeRolesComponent {
         const players = this.assignations.map(a => Object.assign(
             {},
             a.player,
-            { role: this.cards[a.cardIndex].role }
+            { roleId: this.cards[a.cardIndex].roleId }
         ));
         players.forEach((p: Player) => {
-            if (p.role.ownStatus.length > 0) {
-                p.status = [];
-                p.role.ownStatus.forEach(status => p.status.push({
-                    status,
-                    value: status.values[0]
-                }));
+            if (roles[p.roleId].ownStatusIds.length > 0) {
+                p.statusValueIds = [];
+                roles[p.roleId]
+                    .ownStatusIds
+                    .forEach(statusId => p.statusValueIds.push(statuses[statusId].valueIds[0]));
             }
         })
         this.ngRedux.dispatch({ type: actions.SET_PLAYERS, payload: players });
         this.ngRedux.dispatch({
             type: actions.SET_NO_DISTRIBUTED_ROLES,
-            payload: this.availableCards.map(c => c.role)
+            payload: this.availableCards.map(c => c.roleId)
         });
         this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "inProgress" });
     }

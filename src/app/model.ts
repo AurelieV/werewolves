@@ -2,34 +2,31 @@ export interface Role {
   id: number;
   name: string;
   image: string;
-  ownStatus: Status[];
-  othersStatus: Status[];
+  ownStatusIds: number[];
+  othersStatusIds: number[];
 }
 
 export interface Player {
   name: string;
-  role: Role;
+  roleId: number;
   dead: boolean;
-  status: PlayerStatus[];
-}
-
-export interface StatusIconValue {
-  icon: string;
-  class: string;
-}
-
-export interface StatusValue {
-  name: string;
-  iconValue: StatusIconValue;
-  actionName?: string;
+  statusValueIds: number[];
 }
 
 export interface Status {
+  id: number;
   name: string;
-  values: StatusValue[];
+  valueIds: number[];
 }
 
-export interface PlayerStatus {
-  status: Status;
-  value: StatusValue;
+export interface StatusValue {
+  id: number;
+  statusId: number;
+  name: string;
+  actionName: string;
+  icon?: string;
+  class?: string;
 }
+
+
+

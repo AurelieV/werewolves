@@ -32,8 +32,8 @@
     <div md-dialog-content>
         <h2>{{cardsNumber}} cartes disponibles</h2>
         <ul>
-            <li *ngFor="let roleCount of rolesCount">
-                {{roleCount.count}} {{roleCount.role.name}}
+            <li *ngFor="let key of countsKeys">
+                {{counts[key]}} {{roles[key].name}}
             </li>
         </ul>
     </div>

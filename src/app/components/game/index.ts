@@ -3,12 +3,13 @@ import { NgRedux, select } from "@angular-redux/store";
 import { Observable } from 'rxjs/Observable';
 import { MdDialog, MdDialogRef } from '@angular/material';
 
-import { Player, Role, StatusValue, PlayerStatus } from '../../model';
+import { Player, Role, StatusValue, Status } from '../../model';
 import { IAppState, actions } from '../../store';
-import { RoleZoomComponent } from '../role/zoom';
+import { RoleZoomComponent } from '../zoom';
+import { roles, statuses, statusValues } from '../../data';
 
 interface PlayerWithActions extends Player {
-    actions: PlayerStatus[];
+    actions: number[];
 }
 
 @Component({
@@ -18,29 +19,33 @@ interface PlayerWithActions extends Player {
 })
 export class GameComponent {
     @select() players$: Observable<Player[]>;
-    @select() availableRoles$: Observable<Role[]>;
-    @select() noDistributedRoles$: Observable<Role[]>;
+    @select() roleIds$: Observable<number[]>;
+    @select() noDistributedRoleIds$: Observable<number[]>;
 
     players: PlayerWithActions[] = [];
-    availableRoles: Role[] = [];
-    noDistributedRoles: Role[] = [];
-    availableStatus: PlayerStatus[] = [];
+    roleIds: number[] = [];
+    noDistributedRoleIds: number[] = [];
+    availableStatusValues: number[] = [];
+
+    roles: Role[] = roles;
+    statuses: Status[] = statuses;
+    statusValues: StatusValue[] = statusValues;
 
     constructor(private ngRedux: NgRedux<IAppState>, private dialog: MdDialog) {
         this.players$.subscribe(players => {
             this.players = players.map(p => Object.assign({}, p, {actions: this.getActions(p)}));
         });
-        this.availableRoles$.subscribe(roles => {
-            this.availableRoles = roles;
-            this.availableStatus = this.getAvailableStatus();
+        this.roleIds$.subscribe(roleIds => {
+            this.roleIds = roleIds;
+            this.availableStatusValues = this.getAvailableStatusValues();
             this.players = this.players.map(p => Object.assign({}, p, {actions: this.getActions(p)}));
         });
-        this.noDistributedRoles$.subscribe(roles => this.noDistributedRoles = roles);
+        this.noDistributedRoleIds$.subscribe(roleIds => this.noDistributedRoleIds = roleIds);
     }
 
-    openZoom(role: Role) {
+    openZoom(roleId: number) {
         const zoom = this.dialog.open(RoleZoomComponent);
-        zoom.componentInstance.role = role;
+        zoom.componentInstance.role = roles[roleId];
     }
 
     kill(index: number) {
@@ -57,48 +62,52 @@ export class GameComponent {
         }});
     }
 
-    getAvailableStatus() {
-        return this.availableRoles
-            .reduce((acc, r) => {
-                const values = r.othersStatus.reduce((acc, s) => {
-                    return acc.concat(s.values.map(v => ({status: s, value: v})));
-                }, [] as PlayerStatus[]);
+    getAvailableStatusValues(): number[] {
+        return this.roleIds
+            .reduce((acc, roleId) => {
+                const values = roles[roleId].othersStatusIds
+                    .reduce((acc, id) => acc.concat(statuses[id].valueIds), [] as number[]);
                 return acc.concat(values);
-            }, [] as PlayerStatus[]);
+            }, [] as number[]);
     }
 
-    getActions(player: Player): PlayerStatus[] {
-        let result: PlayerStatus[] = [];
-        const currentValues = player.status.map(ps => ps.value.name);
-        const currentStatus = player.status.map(ps => ps.status.name);
-        player.role.ownStatus.forEach(s => {
+    getActions(player: Player): number[] {
+        let result: number[] = [];
+        const currentStatusIds = player.statusValueIds.map(id => statusValues[id].statusId);
+        roles[player.roleId].ownStatusIds.forEach(statusId => {
             result = result.concat(
-                s.values
-                .filter(v => {
-                    if (!v.actionName) return false;
-                    if (v.name) return currentValues.indexOf(v.name) === -1;
-                    return currentStatus.indexOf(s.name) > -1;
+                statuses[statusId].valueIds
+                .filter(id => {
+                    const value = statusValues[id];
+                    // Si c'est un état possible, on peut effectuer l'action si on est pas déjà dans cet état
+                    if (value.name) return player.statusValueIds.indexOf(id) === -1;
+
+                    // Si c'est un état néant, on peut effectuer l'action si on a déjà un statut de même type
+                    return currentStatusIds.indexOf(value.statusId) > -1;
                 })
-                .map(v => ({ status: s, value: v }))
             );
         });
         result = result.concat(
-            this.availableStatus.filter(v => {
-                    if (!v.value.actionName) return false;
-                    if (v.value.name) return currentValues.indexOf(v.value.name) === -1;
-                    return currentStatus.indexOf(v.status.name) > -1;
-                })
+            this.availableStatusValues.filter(valueId => {
+                const value = statusValues[valueId];
+                // Si c'est un état possible, on peut effectuer l'action si on est pas déjà dans cet état
+                if (value.name) return player.statusValueIds.indexOf(valueId) === -1;
+
+                // Si c'est un état néant, on peut effectuer l'action si on a déjà un statut de même type
+                return currentStatusIds.indexOf(value.statusId) > -1;
+            })
         );
 
         return result;
     }
 
-    doAction(player: Player, index: number, status: PlayerStatus) {
-        const playerStatus = player.status.filter(s => s.status.name !== status.status.name);
-        if (status.value.name) playerStatus.push(status);
+    doAction(player: Player, index: number, statusValueId: number) {
+        const value = statusValues[statusValueId];
+        const playerStatus = player.statusValueIds.filter(id => statusValues[id].statusId !== value.statusId);
+        if (statusValues[statusValueId].name) playerStatus.push(statusValueId);
         this.ngRedux.dispatch({ type: actions.UPDATE_PLAYER, payload: {
             index,
-            change: { status: playerStatus }
+            change: { statusValueIds: playerStatus }
         }});
     }
 

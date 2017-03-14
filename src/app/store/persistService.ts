@@ -1,49 +1,32 @@
 import { Injectable } from '@angular/core';
-import { NgRedux, select } from '@angular-redux/store';
+import { NgRedux } from '@angular-redux/store';
 
 import { IAppState } from './index';
 import { currentVersion } from '../index';
 
+const defaultState: IAppState = {
+    gameState: "none",
+    roleIds: [],
+    players: [],
+    noDistributedRoleIds: []
+}
+
 @Injectable()
 export class PersistStoreService {
-    @select() gameState$;
-    @select() availableRoles$;
-    @select() players$;
-    @select() noDistributedRoles$;
+
+    constructor(private ngRedux: NgRedux<IAppState>) {}
 
     start() {
-        this.gameState$.subscribe(gameState => {
-            localStorage["gameState"] = gameState;
-        });
-        this.availableRoles$.subscribe(roles => {
-            localStorage["availableRoles"] = JSON.stringify(roles);
-        });
-        this.players$.subscribe(players => {
-            localStorage["players"] = JSON.stringify(players);
-        });
-        this.noDistributedRoles$.subscribe(roles => {
-            localStorage["noDistributedRoles"] = JSON.stringify(roles);
+        this.ngRedux.select<IAppState>().subscribe(state => {
+            localStorage["state"] = JSON.stringify(state);
         });
         localStorage["version"] = currentVersion;
-
     }
 
     getPersistState(): IAppState {
         const persistStateVersion = localStorage["version"];
-        if (currentVersion === persistStateVersion) {
-            return {
-                gameState: localStorage["gameState"] || "none",
-                availableRoles: JSON.parse(localStorage["availableRoles"] || null) || [],
-                players: JSON.parse(localStorage["players"] || null) || [],
-                noDistributedRoles: JSON.parse(localStorage["noDistributedRoles"] || null) || []
-            };
-        } else {
-            return {
-                gameState: "none",
-                availableRoles: [],
-                players: [],
-                noDistributedRoles: []
-            };
-        }
+        const persistState = localStorage["state"] ? JSON.parse(localStorage["state"]) : defaultState;
+        
+        return currentVersion === persistStateVersion ? persistState : defaultState;
     }
 }

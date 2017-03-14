@@ -8,8 +8,7 @@ import { NgReduxModule, NgRedux } from '@angular-redux/store';
 
 // Components
 import { AppComponent } from './app';
-import { RoleComponent } from './components/role';
-import { RoleZoomComponent } from './components/role/zoom';
+import { RoleZoomComponent } from './components/zoom';
 import { SetRolesComponent } from './components/setRoles';
 import { SetPlayersComponent } from './components/setPlayers';
 import { AttributeRolesComponent } from './components/attributeRoles';
@@ -24,12 +23,11 @@ import { config } from "../config/firebase";
 // Store
 import { IAppState, rootReducer } from './store';
 
-export const currentVersion = "1.0";
+export const currentVersion = "2.0";
 
 @NgModule({
   declarations: [
     AppComponent,
-    RoleComponent,
     RoleZoomComponent,
     SetRolesComponent,
     SetPlayersComponent,

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NgRedux, select } from "@angular-redux/store";
 import { Observable } from 'rxjs/Observable';
 
-import { Role, Player } from '../../model';
+import { Player } from '../../model';
 import { IAppState, actions } from '../../store';
 
 @Component({
@@ -11,12 +11,18 @@ import { IAppState, actions } from '../../store';
     styleUrls: [ 'setPlayers.scss' ]
 })
 export class SetPlayersComponent {
-    @select() availableRoles$: Observable<Role[]>;
+    @select() roleIds$: Observable<number[]>;
     players: Player[] = [];
 
     constructor(private ngRedux: NgRedux<IAppState>) {
-        this.availableRoles$.subscribe(roles => {
-            this.players = roles.map(r => ({ name: "", role: null, dead: false, status: [] }));
+        this.roleIds$.subscribe(roleIds => {
+            this.players = roleIds.map(r => ({ 
+                name: "",
+                roleId: null,
+                dead: false,
+                statusValueIds: [] 
+            }));
+
             this.ngRedux.select<Player[]>("players").subscribe(players => {
                 if (players.length === 0) return;
                 players.forEach((player, index) => {

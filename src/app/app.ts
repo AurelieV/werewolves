@@ -1,9 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { NgRedux, select } from "@angular-redux/store";
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import { Role } from "./model";
-import { roles } from "./data";
+
 import { IAppState, GameState, actions } from "./store";
 
 @Component({
@@ -12,7 +10,6 @@ import { IAppState, GameState, actions } from "./store";
   styleUrls: [ './app.scss' ]
 })
 export class AppComponent implements OnInit {
-  roles: Role[] = roles;
   @select() gameState$: Observable<GameState>;
   gameState: GameState;
 
