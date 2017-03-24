@@ -46,6 +46,20 @@ export const statusValues: StatusValue[] = [
         icon: "thumb_up",
         class: "inactive",
         statusId: 2
+    },
+    {
+        id: 6,
+        name: null,
+        actionName: "Ne plus être mort à moitié",
+        statusId: 3
+    },
+    {
+        id: 7,
+        name: "Half dead",
+        actionName: "Tuer à moitié",
+        icon: "star_half",
+        class: "",
+        statusId: 3
     }
 ]
 export const statuses: Status[] = [
@@ -63,6 +77,11 @@ export const statuses: Status[] = [
         id: 2,
         name: "Potion blanche",
         valueIds: [4, 5]
+    },
+    {
+        id: 3,
+        name: "Vie de l'ancien",
+        valueIds: [6, 7]
     }
 ]
 
@@ -78,7 +97,7 @@ export const roles: Role[] = [
         "id": 1,
         "name": "Ancien",
         "image": "assets/cards/ancien.png",
-        "ownStatusIds": [],
+        "ownStatusIds": [ 3 ],
         "othersStatusIds": []
     },
     {

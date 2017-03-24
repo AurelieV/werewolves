@@ -29,7 +29,7 @@ export class SetRolesComponent implements OnInit {
     }
 
     increment(id: number) {
-        this.counts[id] = (this.counts[id] || 0) + 1)
+        this.counts[id] = (this.counts[id] || 0) + 1;
     }
 
     decrement(id: number) {

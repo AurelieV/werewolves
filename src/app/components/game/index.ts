@@ -83,7 +83,8 @@ export class GameComponent {
                     if (value.name) return player.statusValueIds.indexOf(id) === -1;
 
                     // Si c'est un état néant, on peut effectuer l'action si on a déjà un statut de même type
-                    return currentStatusIds.indexOf(value.statusId) > -1;
+                    // différent
+                    return currentStatusIds.indexOf(value.statusId) > -1 && player.statusValueIds.indexOf(id) === -1;
                 })
             );
         });
@@ -94,7 +95,8 @@ export class GameComponent {
                 if (value.name) return player.statusValueIds.indexOf(valueId) === -1;
 
                 // Si c'est un état néant, on peut effectuer l'action si on a déjà un statut de même type
-                return currentStatusIds.indexOf(value.statusId) > -1;
+                // différent
+                return currentStatusIds.indexOf(value.statusId) > -1 && player.statusValueIds.indexOf(valueId) === -1;
             })
         );
 
