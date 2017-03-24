@@ -1,6 +1,12 @@
 <md-toolbar class="header-bar" color="primary">
     <span class="title">Game en cours</span>
-    <button md-raised-button color="accent" (click)="restartGame()">Restart</button>
+    <button md-icon-button [mdMenuTriggerFor]="headerMenu" class="menu-button">
+        <md-icon>more_vert</md-icon>
+    </button>
+    <md-menu #headerMenu="mdMenu">
+        <button md-menu-item (click)="restartGame()">Recommencer</button>
+        <button md-menu-item (click)="changeRoles()">Changer rôles</button>
+    </md-menu>
 </md-toolbar>
 
 <div class="content">

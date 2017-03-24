@@ -118,4 +118,8 @@ export class GameComponent {
     restartGame() {
         this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "setRoles"});
     }
+
+    changeRoles() {
+        this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "attributeRoles"});
+    }
 }

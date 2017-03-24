@@ -23,25 +23,35 @@ interface Card {
     styleUrls: [ 'attributeRoles.scss' ]
 })
 export class AttributeRolesComponent {
-    @select() roleIds$: Observable<number[]>;
-    @select() players$: Observable<Player[]>;
 
     assignations: Assignation[] = [];
     cards: Card[] = [];
     availableCards: Card[] = [];
     roles: Role[] = roles;
+    loaded: false;
 
-    constructor(private ngRedux: NgRedux<IAppState>) {
-        this.players$.subscribe(players => {
-            this.assignations = players.map((p, i) => ({player: p, cardIndex: -1}));
-        });
-        this.roleIds$.subscribe(roleIds => {
-            this.cards = roleIds.map((id, index) => ({
+    constructor(private ngRedux: NgRedux<IAppState>) {}
+
+    ngOnInit() {
+        this.ngRedux.select<IAppState>().subscribe(state => {
+            console.log("pouet");
+            this.loaded = false;
+            this.cards = state.roleIds.map((id, index) => ({
                 roleId: id,
                 cardIndex: index,
                 taken: false
             }));
             this.availableCards = Array.from(this.cards);
+            this.assignations = state.players.map((p, i) => {
+                if (p.roleId) {
+                    return { player: p, cardIndex: this.cards.findIndex(c => c.roleId === p.roleId) };
+                }
+                else {
+                    return { player: p, cardIndex: -1 }
+                }
+            });
+            this.onSelectChange();
+            this.loaded = true;
         });
     }
 

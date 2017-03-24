@@ -8,10 +8,11 @@
     <p><span class="bold">{{availableCards.length}}</span> cartes disponibles<p>
     <p class="hint"> Les cartes non attribuées seront distribuées au hasard</p>
     <form>
-        <ul class="assignations">
+        <ul class="assignations" *ngIf="assignations && assignations.length">
             <li class="assignation" *ngFor="let assignation of assignations;">
-                <span>{{assignation.player.name}}</span>
+                <span>{{assignation.player.name}} {{assignation.cardIndex}}</span>
                 <md-select 
+                    *ngIf="loaded && cards && cards.length"
                     (change)="onSelectChange()"
                     [(ngModel)]="assignation.cardIndex"
                     [name]="'assignation-' + i">
@@ -20,7 +21,7 @@
                         *ngFor="let card of cards"
                         [value]="card.cardIndex"
                         [disabled]="card.taken && card.cardIndex !== assignation.cardIndex">
-                        {{roles[card.roleId].name}}
+                        {{roles[card.roleId].name}} {{card.cardIndex}} {{assignation.cardIndex}}
                     </md-option>
                 </md-select>
             </li>
