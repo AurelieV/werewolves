@@ -311,7 +311,7 @@ export const roles: Role[] = [
         "image": "assets/cards/sorciere.png",
         "ownStatusIds": [ 1, 2, 3, 4 ],
         "othersStatusIds": [],
-        "initialStatusIds": [ 2, 4 ]
+        "initialStatusIds": [ 1, 3 ]
     },
     {
         "id": 28,

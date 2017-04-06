@@ -86,11 +86,6 @@ export class GameComponent implements OnInit, OnDestroy {
                     });
                 }
                 if (!hasAlready) {
-                    const isNotCompatible = 
-                        player.statusIds.findIndex(i => status.noCompatibleWith.indexOf(i) > -1) > -1;
-                    if (isNotCompatible) {
-                        return;
-                    }
                     result.push({
                         statusId: id,
                         type: "add",
@@ -107,7 +102,9 @@ export class GameComponent implements OnInit, OnDestroy {
         if (action.type === "delete") {
             newStatusIds = player.statusIds.filter(i => i !== action.statusId);
         } else {
-            newStatusIds = player.statusIds.concat(action.statusId);
+            newStatusIds = player.statusIds
+                .filter(id => statuses[id].noCompatibleWith.indexOf(action.statusId) === -1)
+                .concat(action.statusId);
         }
         this.ngRedux.dispatch({ type: actions.UPDATE_PLAYER, payload: {
             index,
