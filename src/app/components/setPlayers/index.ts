@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgRedux, select } from "@angular-redux/store";
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 
 import { Player } from '../../model';
 import { IAppState, actions } from '../../store';
@@ -10,39 +11,48 @@ import { IAppState, actions } from '../../store';
     templateUrl: './setPlayers.html',
     styleUrls: [ 'setPlayers.scss' ]
 })
-export class SetPlayersComponent {
+export class SetPlayersComponent implements OnInit, OnDestroy {
     @select() roleIds$: Observable<number[]>;
-    players: Player[] = [];
+    players: any[] = [];
+    private subscriptions: Subscription[] = [];
 
-    constructor(private ngRedux: NgRedux<IAppState>) {
-        this.roleIds$.subscribe(roleIds => {
-            this.players = roleIds.map(r => ({ 
-                name: "",
-                roleId: null,
-                dead: false,
-                statusValueIds: [] 
-            }));
+    constructor(private ngRedux: NgRedux<IAppState>) {}
 
-            this.ngRedux.select<Player[]>("players").subscribe(players => {
-                if (players.length === 0) return;
-                players.forEach((player, index) => {
-                    if (index < this.players.length) {
-                        this.players[index] = Object.assign({}, player)
-                    } else {
-                        this.players.push(Object.assign({}, player));
-                    }
-                });
+    ngOnInit() {
+        this.subscriptions.push(this.ngRedux.select<IAppState>().subscribe(state => {
+            const roleIds = state.roleIds;
+            const players = state.players;
+
+            this.players = roleIds.map(r => ({ name: "" }));
+            if (players.length === 0) return;
+            players.forEach((player, index) => {
+                if (index < this.players.length) {
+                    this.players[index] = { name: player.name };
+                } else {
+                    this.players = this.players.concat({ name: player.name });
+                }
             });
-        });
+        }));
     }
 
     validate() {
-        const players = this.players.filter(p => p.name);
+        const players: Player[] = this.players
+            .filter(p => p.name)
+            .map(p => ({
+                name: p.name,
+                roleId: null,
+                statusIds: [],
+                dead: false
+            }));
         this.ngRedux.dispatch({ type: actions.SET_PLAYERS, payload: players });
         this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "attributeRoles" });
     }
 
     cancel() {
         this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "setRoles" });
+    }
+
+    ngOnDestroy() {
+        this.subscriptions.forEach(s => s.unsubscribe());
     }
 }

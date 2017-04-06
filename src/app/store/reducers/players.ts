@@ -10,14 +10,6 @@ export function players(state: Player[] = [], action: any) {
       switch (gameState) {
         case "none":
           return [];
-        case "setRoles":
-        case "setPlayers":
-            return state.map(p => ({
-                name: p.name,
-                roleId: null,
-                dead: false,
-                statusValueIds: []
-            }));
         default:
           return state;
       }

@@ -5,7 +5,7 @@
 </md-toolbar>
 
 <div class="players content">
-    <p><span class="bold">{{players.length}}</span> cartes disponibles<p>
+    <p><span class="bold">{{(roleIds$ | async).length}}</span> cartes disponibles<p>
     <p class="hint"> Laissez un nom vide pour ne pas distribuer de carte. </p>
     <form>
         <ul>

@@ -1,6 +1,7 @@
-import { Component, ViewChild, TemplateRef, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, ViewChild, TemplateRef, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { NgRedux } from "@angular-redux/store";
+import { Subscription } from 'rxjs/Subscription';
 
 import { roles } from '../../data';
 import { Role } from '../../model';
@@ -11,21 +12,23 @@ import { IAppState, actions } from '../../store';
     templateUrl: './setRoles.html',
     styleUrls: [ 'setRoles.scss' ]
 })
-export class SetRolesComponent implements OnInit {
+export class SetRolesComponent implements OnInit, OnDestroy {
     @ViewChild("confirmation") confirmationTemplate: TemplateRef<any>;
 
     roles: Role[] = roles;
     counts: { [id: number]: number } = {};
     confirmationRef: MdDialogRef<any>;
+    
+    private subscriptions: Subscription[] = [];
 
     constructor(private dialog: MdDialog, private ngRedux: NgRedux<IAppState>) {}
 
     ngOnInit() {
-        this.ngRedux.select<number[]>("roleIds").subscribe(roleIds => {
+        this.subscriptions.push(this.ngRedux.select<number[]>("roleIds").subscribe(roleIds => {
             if (roleIds.length === 0) return;
             this.counts = {};
             roleIds.forEach(id => this.counts[id] = (this.counts[id] || 0) + 1)
-        });
+        }));
     }
 
     increment(id: number) {
@@ -40,7 +43,6 @@ export class SetRolesComponent implements OnInit {
             this.counts[id] = this.counts[id] - 1;
         }
     }
-
 
     get cardsNumber(): number {
         return Object.keys(this.counts).reduce((count, i) => count + this.counts[i], 0);
@@ -72,5 +74,9 @@ export class SetRolesComponent implements OnInit {
 
     cancel() {
         this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "none" });
+    }
+
+    ngOnDestroy() {
+        this.subscriptions.forEach(s => s.unsubscribe());
     }
 }

@@ -1,15 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgRedux, select } from "@angular-redux/store";
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { MdDialog, MdDialogRef } from '@angular/material';
 
-import { Player, Role, StatusValue, Status } from '../../model';
+import { Player, Role, Status } from '../../model';
 import { IAppState, actions } from '../../store';
 import { RoleZoomComponent } from '../zoom';
-import { roles, statuses, statusValues } from '../../data';
+import { roles, statuses } from '../../data';
 
+interface Action {
+    name: string;
+    type: "delete" | "add",
+    statusId: number;
+}
 interface PlayerWithActions extends Player {
-    actions: number[];
+    actions: Action[];
 }
 
 @Component({
@@ -17,30 +23,26 @@ interface PlayerWithActions extends Player {
     templateUrl: './game.html',
     styleUrls: [ 'game.scss' ]
 })
-export class GameComponent {
-    @select() players$: Observable<Player[]>;
-    @select() roleIds$: Observable<number[]>;
-    @select() noDistributedRoleIds$: Observable<number[]>;
-
+export class GameComponent implements OnInit, OnDestroy {
     players: PlayerWithActions[] = [];
     roleIds: number[] = [];
     noDistributedRoleIds: number[] = [];
-    availableStatusValues: number[] = [];
+    availableStatuses: number[] = [];
 
     roles: Role[] = roles;
     statuses: Status[] = statuses;
-    statusValues: StatusValue[] = statusValues;
 
-    constructor(private ngRedux: NgRedux<IAppState>, private dialog: MdDialog) {
-        this.players$.subscribe(players => {
-            this.players = players.map(p => Object.assign({}, p, {actions: this.getActions(p)}));
-        });
-        this.roleIds$.subscribe(roleIds => {
-            this.roleIds = roleIds;
-            this.availableStatusValues = this.getAvailableStatusValues();
-            this.players = this.players.map(p => Object.assign({}, p, {actions: this.getActions(p)}));
-        });
-        this.noDistributedRoleIds$.subscribe(roleIds => this.noDistributedRoleIds = roleIds);
+    private subscriptions: Subscription[] = [];
+
+    constructor(private ngRedux: NgRedux<IAppState>, private dialog: MdDialog) {}
+
+    ngOnInit() {
+        this.subscriptions.push(this.ngRedux.select<IAppState>().subscribe(state => {
+            this.noDistributedRoleIds = state.noDistributedRoleIds;
+            this.roleIds = state.roleIds;
+            this.availableStatuses = this.getAvailableStatuses();
+            this.players = state.players.map(p => Object.assign({}, p, {actions: this.getActions(p)}));
+        }));
     }
 
     openZoom(roleId: number) {
@@ -62,54 +64,54 @@ export class GameComponent {
         }});
     }
 
-    getAvailableStatusValues(): number[] {
+    getAvailableStatuses(): number[] {
         return this.roleIds
-            .reduce((acc, roleId) => {
-                const values = roles[roleId].othersStatusIds
-                    .reduce((acc, id) => acc.concat(statuses[id].valueIds), [] as number[]);
-                return acc.concat(values);
-            }, [] as number[]);
+            .reduce((acc, roleId) => acc.concat(roles[roleId].othersStatusIds), [] as number[])
+            .filter((id, i, tab) => tab.indexOf(id) === i);
     }
 
-    getActions(player: Player): number[] {
-        let result: number[] = [];
-        const currentStatusIds = player.statusValueIds.map(id => statusValues[id].statusId);
-        roles[player.roleId].ownStatusIds.forEach(statusId => {
-            result = result.concat(
-                statuses[statusId].valueIds
-                .filter(id => {
-                    const value = statusValues[id];
-                    // Si c'est un état possible, on peut effectuer l'action si on est pas déjà dans cet état
-                    if (value.name) return player.statusValueIds.indexOf(id) === -1;
-
-                    // Si c'est un état néant, on peut effectuer l'action si on a déjà un statut de même type
-                    // différent
-                    return currentStatusIds.indexOf(value.statusId) > -1 && player.statusValueIds.indexOf(id) === -1;
-                })
-            );
-        });
-        result = result.concat(
-            this.availableStatusValues.filter(valueId => {
-                const value = statusValues[valueId];
-                // Si c'est un état possible, on peut effectuer l'action si on est pas déjà dans cet état
-                if (value.name) return player.statusValueIds.indexOf(valueId) === -1;
-
-                // Si c'est un état néant, on peut effectuer l'action si on a déjà un statut de même type
-                // différent
-                return currentStatusIds.indexOf(value.statusId) > -1 && player.statusValueIds.indexOf(valueId) === -1;
-            })
-        );
+    getActions(player: Player): Action[] {
+        let result: Action[] = [];
+        roles[player.roleId].ownStatusIds
+            .concat(this.availableStatuses)
+            .filter((id, i, tab) => tab.indexOf(id) === i)
+            .forEach(id => {
+                const status = statuses[id];
+                const hasAlready = player.statusIds.indexOf(id) > -1;
+                if (hasAlready && status.deleteActionName) {
+                    result.push({
+                        statusId: id,
+                        type: "delete",
+                        name: status.deleteActionName
+                    });
+                }
+                if (!hasAlready) {
+                    const isNotCompatible = 
+                        player.statusIds.findIndex(i => status.noCompatibleWith.indexOf(i) > -1) > -1;
+                    if (isNotCompatible) {
+                        return;
+                    }
+                    result.push({
+                        statusId: id,
+                        type: "add",
+                        name: status.actionName
+                    });
+                }
+            });
 
         return result;
     }
 
-    doAction(player: Player, index: number, statusValueId: number) {
-        const value = statusValues[statusValueId];
-        const playerStatus = player.statusValueIds.filter(id => statusValues[id].statusId !== value.statusId);
-        if (statusValues[statusValueId].name) playerStatus.push(statusValueId);
+    doAction(player: Player, index: number, action: Action) {
+        let newStatusIds: number[];
+        if (action.type === "delete") {
+            newStatusIds = player.statusIds.filter(i => i !== action.statusId);
+        } else {
+            newStatusIds = player.statusIds.concat(action.statusId);
+        }
         this.ngRedux.dispatch({ type: actions.UPDATE_PLAYER, payload: {
             index,
-            change: { statusValueIds: playerStatus }
+            change: { statusIds: newStatusIds }
         }});
     }
 
@@ -119,5 +121,9 @@ export class GameComponent {
 
     restartGame() {
         this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "setRoles"});
+    }
+
+    ngOnDestroy() {
+        this.subscriptions.forEach(s => s.unsubscribe());
     }
 }

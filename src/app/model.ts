@@ -4,28 +4,23 @@ export interface Role {
   image: string;
   ownStatusIds: number[];
   othersStatusIds: number[];
+  initialStatusIds?: number[];
 }
 
 export interface Player {
   name: string;
   roleId: number;
   dead: boolean;
-  statusValueIds: number[];
+  statusIds: number[];
 }
 
 export interface Status {
   id: number;
-  name: string;
-  valueIds: number[];
-}
-
-export interface StatusValue {
-  id: number;
-  statusId: number;
-  name: string;
   actionName: string;
-  icon?: string;
+  deleteActionName: string;
+  icon: string;
   class?: string;
+  noCompatibleWith: number[];
 }
 
 

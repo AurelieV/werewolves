@@ -12,8 +12,8 @@
             <p md-line>{{roles[player.roleId].name}}</p>
             <md-icon
                 class="status"
-                *ngFor="let valueId of player.statusValueIds"
-                [ngClass]="statusValues[valueId].class">{{statusValues[valueId].icon}}</md-icon>
+                *ngFor="let id of player.statusIds"
+                [ngClass]="statuses[id].class">{{statuses[id].icon}}</md-icon>
             <span class="dead-status" *ngIf="player.dead">DEAD</span>
             <button md-icon-button [mdMenuTriggerFor]="menu" class="menu-button">
                 <md-icon>more_vert</md-icon>
@@ -22,8 +22,8 @@
                 <button md-menu-item *ngIf="!player.dead" (click)="kill(i)">Tuer</button>
                 <button md-menu-item *ngIf="player.dead" (click)="resurrect(i)">Ressusciter</button>
                 <button md-menu-item
-                    *ngFor="let valueId of player.actions"
-                    (click)="doAction(player, i, valueId)">{{statusValues[valueId].actionName}}
+                    *ngFor="let action of player.actions"
+                    (click)="doAction(player, i, action)">{{action.name}}
                 </button>
             </md-menu>
         </md-list-item>

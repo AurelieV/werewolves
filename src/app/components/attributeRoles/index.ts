@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgRedux, select } from "@angular-redux/store";
 import { Observable } from 'rxjs/Observable';
 import { MdSelectChange } from '@angular/material';
+import { Subscription } from 'rxjs/Subscription';
 
 import { Role, Player } from '../../model';
 import { IAppState, actions } from '../../store';
@@ -22,27 +23,26 @@ interface Card {
     templateUrl: './attributeRoles.html',
     styleUrls: [ 'attributeRoles.scss' ]
 })
-export class AttributeRolesComponent {
-    @select() roleIds$: Observable<number[]>;
-    @select() players$: Observable<Player[]>;
-
+export class AttributeRolesComponent implements OnInit, OnDestroy {
     assignations: Assignation[] = [];
     cards: Card[] = [];
     availableCards: Card[] = [];
     roles: Role[] = roles;
 
-    constructor(private ngRedux: NgRedux<IAppState>) {
-        this.players$.subscribe(players => {
-            this.assignations = players.map((p, i) => ({player: p, cardIndex: -1}));
-        });
-        this.roleIds$.subscribe(roleIds => {
-            this.cards = roleIds.map((id, index) => ({
+    private subscriptions: Subscription[] = [];
+
+    constructor(private ngRedux: NgRedux<IAppState>) {}
+
+    ngOnInit() {
+        this.subscriptions.push(this.ngRedux.select<IAppState>().subscribe(state => {
+            this.assignations = state.players.map((p, i) => ({player: p, cardIndex: -1}));
+            this.cards = state.roleIds.map((id, index) => ({
                 roleId: id,
                 cardIndex: index,
                 taken: false
             }));
             this.availableCards = Array.from(this.cards);
-        });
+        }));
     }
 
     onSelectChange() {
@@ -61,25 +61,25 @@ export class AttributeRolesComponent {
         const players = this.assignations.map(a => Object.assign(
             {},
             a.player,
-            { roleId: this.cards[a.cardIndex].roleId }
-        ));
-        players.forEach((p: Player) => {
-            if (roles[p.roleId].ownStatusIds.length > 0) {
-                p.statusValueIds = [];
-                roles[p.roleId]
-                    .ownStatusIds
-                    .forEach(statusId => p.statusValueIds.push(statuses[statusId].valueIds[0]));
+            { 
+                roleId: this.cards[a.cardIndex].roleId,
+                statusIds: this.roles[this.cards[a.cardIndex].roleId].initialStatusIds || []
             }
-        })
+        ));
+        const noDistributed = this.availableCards.map(c => c.roleId);
         this.ngRedux.dispatch({ type: actions.SET_PLAYERS, payload: players });
         this.ngRedux.dispatch({
             type: actions.SET_NO_DISTRIBUTED_ROLES,
-            payload: this.availableCards.map(c => c.roleId)
+            payload: noDistributed
         });
         this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "inProgress" });
     }
 
     cancel() {
         this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "setPlayers" });
+    }
+
+    ngOnDestroy() {
+        this.subscriptions.forEach(s => s.unsubscribe());
     }
 }
