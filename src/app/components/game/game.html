@@ -1,6 +1,12 @@
 <md-toolbar class="header-bar" color="primary">
     <span class="title">Game en cours</span>
-    <button md-raised-button color="accent" (click)="restartGame()">Restart</button>
+    <button md-icon-button [mdMenuTriggerFor]="headerMenu" class="menu-button">
+        <md-icon>more_vert</md-icon>
+    </button>
+    <md-menu #headerMenu="mdMenu">
+        <button md-menu-item (click)="restartGame()">Recommencer</button>
+        <button md-menu-item (click)="saveGame()">Sauvegarder</button>
+    </md-menu>
 </md-toolbar>
 
 <div class="content">
@@ -35,3 +41,16 @@
         </md-list-item>
     </md-list>
 </div>
+
+<template #saveGameTemplate>
+    <h1 md-dialog-title>Sauvegarde de la partie</h1>
+    <div md-dialog-content>
+       <md-input-container>
+           <input [name]="winner" mdInput placeholder="Qui a gagné?" [(ngModel)]="winner">
+        </md-input-container>
+    </div>
+    <div md-dialog-actions>
+        <button md-button color="warn" (click)="saveGameModalRef.close()">Annuler</button>
+        <button md-button color="primary" (click)="saveGameModalRef.close(true)">Valider</button>
+    </div>
+</template>

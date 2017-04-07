@@ -21,6 +21,7 @@ export interface Status {
   icon: string;
   class?: string;
   noCompatibleWith: number[];
+  name: string;
 }
 
 

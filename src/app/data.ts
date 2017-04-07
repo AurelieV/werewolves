@@ -7,7 +7,8 @@ export const statuses: Status[] = [
         deleteActionName: "Ne plus être amoureux",
         icon: "favorite",
         class: "red",
-        noCompatibleWith: []
+        noCompatibleWith: [],
+        name: "Amoureux"
     },
     {
         id: 1,
@@ -15,7 +16,8 @@ export const statuses: Status[] = [
         deleteActionName: null,
         icon: "thumb_down",
         class: "black",
-        noCompatibleWith: [ 2 ]
+        noCompatibleWith: [ 2 ],
+        name: "Potion noire non utilisée"
     },
     {
         id: 2,
@@ -23,7 +25,8 @@ export const statuses: Status[] = [
         deleteActionName: null,
         icon: "thumb_down",
         class: "inactive",
-        noCompatibleWith: [ 1 ]
+        noCompatibleWith: [ 1 ],
+        name: "Potion noire utilisée"
     },
     {
         id: 3,
@@ -31,7 +34,8 @@ export const statuses: Status[] = [
         deleteActionName: null,
         icon: "thumb_up",
         class: "green",
-        noCompatibleWith: [ 4 ]
+        noCompatibleWith: [ 4 ],
+        name: "Potion blanche non utilisée"
     },
     {
         id: 4,
@@ -39,7 +43,8 @@ export const statuses: Status[] = [
         deleteActionName: null,
         icon: "thumb_up",
         class: "inactive",
-        noCompatibleWith: [ 3 ]
+        noCompatibleWith: [ 3 ],
+        name: "Potion blanche utilisée"
     },
     {
         id: 5,
@@ -47,7 +52,8 @@ export const statuses: Status[] = [
         deleteActionName: "Ne plus être à moitié mort",
         icon: "star_half",
         class: "",
-        noCompatibleWith: []
+        noCompatibleWith: [],
+        name: "A moitié mort"
     },
     {
         id: 6,
@@ -55,7 +61,8 @@ export const statuses: Status[] = [
         deleteActionName: "Ne plus priver de pouvoirs",
         icon: "highlight_off",
         class: "",
-        noCompatibleWith: []
+        noCompatibleWith: [],
+        name: "Plus de pouvoir"
     },
     {
         id: 7,
@@ -63,7 +70,8 @@ export const statuses: Status[] = [
         deleteActionName: "Ne plus être un LG",
         icon: "battery_alert",
         class: "red",
-        noCompatibleWith: []
+        noCompatibleWith: [],
+        name: "Transformé en LG"
     },
     {
         id: 8,
@@ -71,7 +79,8 @@ export const statuses: Status[] = [
         deleteActionName: "Retirer du groupe 1",
         icon: "swap_horiz",
         class: "",
-        noCompatibleWith: [ 9 ]
+        noCompatibleWith: [ 9 ],
+        name: "Groupe 1"
     },
     {
         id: 9,
@@ -79,7 +88,8 @@ export const statuses: Status[] = [
         deleteActionName: "Retirer du groupe 2",
         icon: "swap_vert",
         class: "",
-        noCompatibleWith: [ 8 ]
+        noCompatibleWith: [ 8 ],
+        name: "Groupe 2"
     },
     {
         id: 10,
@@ -87,7 +97,8 @@ export const statuses: Status[] = [
         deleteActionName: "Ne plus être désigné par le corbeau",
         icon: "email",
         class: "",
-        noCompatibleWith: []
+        noCompatibleWith: [],
+        name: "Désigné par le corbeau"
     },
     {
         id: 11,
@@ -95,7 +106,8 @@ export const statuses: Status[] = [
         deleteActionName: "Ne plus être mentor",
         icon: "group",
         class: "",
-        noCompatibleWith: []
+        noCompatibleWith: [],
+        name: "Mentor"
     },
     {
         id: 12,
@@ -103,7 +115,8 @@ export const statuses: Status[] = [
         deleteActionName: "Ne plus être tué par le village",
         icon: "alarm_off",
         class: "",
-        noCompatibleWith: []
+        noCompatibleWith: [],
+        name: "Tué par le village"
     },
     {
         id: 13,
@@ -111,7 +124,8 @@ export const statuses: Status[] = [
         deleteActionName: "Ne plus être envouté",
         icon: "pan_tool",
         class: "",
-        noCompatibleWith: []
+        noCompatibleWith: [],
+        name: "Envouté"
     }
 ]
 
