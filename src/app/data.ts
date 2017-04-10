@@ -247,7 +247,7 @@ export const roles: Role[] = [
         "name": "Joueur de flûte",
         "image": "assets/cards/joueur_flute.png",
         "ownStatusIds": [],
-        "othersStatusIds": []
+        "othersStatusIds": [ 13 ]
     },
     {
         "id": 17,
