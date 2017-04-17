@@ -4,6 +4,7 @@
         <md-icon>more_vert</md-icon>
     </button>
     <md-menu #headerMenu="mdMenu">
+        <button md-menu-item (click)="changeRoles()">Changer les rôles</button>
         <button md-menu-item (click)="restartGame()">Recommencer</button>
         <button md-menu-item (click)="saveGame()">Sauvegarder</button>
     </md-menu>

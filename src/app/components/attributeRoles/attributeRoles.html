@@ -10,7 +10,7 @@
     <p class="hint"> Les cartes non attribuées seront distribuées au hasard</p>
     <form>
         <ul class="assignations">
-            <li class="assignation" *ngFor="let assignation of assignations;">
+            <li class="assignation" *ngFor="let assignation of assignations;let i = index;">
                 <span>{{assignation.player.name}}</span>
                 <md-select 
                     (change)="onSelectChange()"

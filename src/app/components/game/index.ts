@@ -58,6 +58,10 @@ export class GameComponent implements OnInit, OnDestroy {
         zoom.componentInstance.role = roles[roleId];
     }
 
+    changeRoles() {
+        this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "attributeRoles"});
+    }
+
     kill(index: number) {
         this.ngRedux.dispatch({ type: actions.UPDATE_PLAYER, payload: {
             index,

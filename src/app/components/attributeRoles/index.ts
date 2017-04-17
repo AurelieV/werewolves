@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgRedux, select } from "@angular-redux/store";
 import { Observable } from 'rxjs/Observable';
+import "rxjs/add/operator/take";
 import { MdSelectChange } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -23,7 +24,7 @@ interface Card {
     templateUrl: './attributeRoles.html',
     styleUrls: [ 'attributeRoles.scss' ]
 })
-export class AttributeRolesComponent implements OnInit, OnDestroy {
+export class AttributeRolesComponent implements OnDestroy {
     assignations: Assignation[] = [];
     cards: Card[] = [];
     availableCards: Card[] = [];
@@ -31,18 +32,22 @@ export class AttributeRolesComponent implements OnInit, OnDestroy {
 
     private subscriptions: Subscription[] = [];
 
-    constructor(private ngRedux: NgRedux<IAppState>) {}
-
-    ngOnInit() {
-        this.subscriptions.push(this.ngRedux.select<IAppState>().subscribe(state => {
-            this.assignations = state.players.map((p, i) => ({player: p, cardIndex: -1}));
-            this.cards = state.roleIds.map((id, index) => ({
-                roleId: id,
-                cardIndex: index,
-                taken: false
-            }));
-            this.availableCards = Array.from(this.cards);
+    constructor(private ngRedux: NgRedux<IAppState>) {
+        const state = this.ngRedux.getState();
+        this.cards = state.roleIds.map((id, index) => ({
+            roleId: id,
+            cardIndex: index,
+            taken: false
         }));
+        this.availableCards = Array.from(this.cards);
+        this.assignations = state.players.map((p, i) => {
+            if (p.roleId === null) return {player: p, cardIndex: -1};
+            const card = this.availableCards.find(c => c.roleId === p.roleId);
+            card.taken = true;
+            this.availableCards = this.availableCards.filter(c => !c.taken);
+
+            return {player: p, cardIndex: card.cardIndex};
+        });
     }
 
     onSelectChange() {
