@@ -156,7 +156,7 @@ export class GameComponent implements OnInit, OnDestroy {
                 p.statuses = p.statusIds.map(id => statuses[id].name)
             });
             const blob = new Blob([JSON.stringify(data, null, 4)], {type: "application/json"});
-            FileSaver.saveAs(blob, `LG-${moment().format("DDMMMYY")}`);
+            FileSaver.saveAs(blob, `LG-${moment().format("DDMMMYY")}-${moment().format('X')}`);
             if (restartAfter) this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "setRoles"});
         });
     }
