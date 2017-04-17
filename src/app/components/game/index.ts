@@ -37,7 +37,9 @@ export class GameComponent implements OnInit, OnDestroy {
     statuses: Status[] = statuses;
 
     @ViewChild("saveGameTemplate") private saveGameTemplate: TemplateRef<any>;
+    @ViewChild("restartGameTemplate") private restartGameTemplate: TemplateRef<any>;
     private saveGameModalRef: MdDialogRef<any>;
+    private restartGameModalRef: MdDialogRef<any>;
     private subscriptions: Subscription[] = [];
 
     constructor(private ngRedux: NgRedux<IAppState>, private dialog: MdDialog) {}
@@ -123,15 +125,26 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     restartGame() {
-        this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "setRoles"});
+        this.restartGameModalRef = this.dialog.open(this.restartGameTemplate);
+        this.restartGameModalRef.afterClosed().subscribe(save => {
+            if (!save) {
+                this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "setRoles"});
+                return;
+            }
+            this.saveGame(true);
+        });
     }
 
-    saveGame() {
+    saveGame(restartAfter: boolean = false) {
         this.saveGameModalRef = this.dialog.open(this.saveGameTemplate);
+        const players = this.ngRedux.getState().players;
         this.saveGameModalRef.afterClosed().subscribe(isConfirmed => {
-            if (!isConfirmed) return;
+            if (!isConfirmed) {
+                if (restartAfter) this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "setRoles"});
+                return;
+            }
             let data: any = {
-                players: this.ngRedux.getState().players,
+                players,
                 winner: this.winner
             }
             data.players.forEach(p => {
@@ -140,6 +153,7 @@ export class GameComponent implements OnInit, OnDestroy {
             });
             const blob = new Blob([JSON.stringify(data, null, 4)], {type: "application/json"});
             FileSaver.saveAs(blob, `LG-${moment().format("DDMMMYY")}`);
+            if (restartAfter) this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "setRoles"});
         });
     }
 

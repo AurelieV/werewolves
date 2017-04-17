@@ -54,3 +54,10 @@
         <button md-button color="primary" (click)="saveGameModalRef.close(true)">Valider</button>
     </div>
 </template>
+<template #restartGameTemplate>
+    <h1 md-dialog-title>Voulez vous sauvegarder avant?</h1>
+    <div md-dialog-actions>
+        <button md-button color="warn" (click)="restartGameModalRef.close()">Annuler</button>
+        <button md-button color="primary" (click)="restartGameModalRef.close(true)">Valider</button>
+    </div>
+</template>
