@@ -7,5 +7,6 @@ import { Role } from "../../model";
     styleUrls: [ 'zoom.scss' ]
 })
 export class RoleZoomComponent {
-    @Input() role: Role; 
+    @Input() role: Role;
+    @Input() player: string; 
 }

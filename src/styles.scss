@@ -8,6 +8,13 @@
     }
 }
 
+.open-zoom {
+    .mat-dialog-container {
+        max-width: initial !important;
+        padding: 0 !important;
+    }
+}
+
 body {
     margin: 0;
 }
