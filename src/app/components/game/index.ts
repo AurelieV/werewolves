@@ -59,7 +59,16 @@ export class GameComponent implements OnInit, OnDestroy {
         zoom.componentInstance.role = roles[roleId];
         zoom.componentInstance.player = name;
         document.body.className += "open-zoom";
-        zoom.afterClosed().subscribe(_ => document.body.className = classes)
+        const closeZoom: EventListener = e => {
+            e.preventDefault();
+            e.stopPropagation();
+            zoom.close();
+        }
+        const listenBack = window.addEventListener("popstate", closeZoom);
+        zoom.afterClosed().subscribe(_ => {
+            document.body.className = classes;
+            window.removeEventListener("popstate", closeZoom);
+        })
     }
 
     changeRoles() {

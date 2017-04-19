@@ -55,5 +55,6 @@ export class AppModule {
         const persistState = persist.getPersistState(); 
         this.ngRedux.configureStore(rootReducer, persistState);
         persist.start();
+        history.pushState("back", null, null); // for handle back button history has to be not empty
     }
 }
