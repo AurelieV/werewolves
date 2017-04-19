@@ -1,3 +1,8 @@
+export interface OrderInstructions {
+  instructions: string[];
+  priority: number;
+}
+
 export interface Role {
   id: number;
   name: string;
@@ -5,6 +10,7 @@ export interface Role {
   ownStatusIds: number[];
   othersStatusIds: number[];
   initialStatusIds?: number[];
+  getInstructions?: (number) => OrderInstructions;
 }
 
 export interface Player {

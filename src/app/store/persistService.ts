@@ -8,7 +8,9 @@ const defaultState: IAppState = {
     gameState: "none",
     roleIds: [],
     players: [],
-    noDistributedRoleIds: []
+    noDistributedRoleIds: [],
+    nightNumber: 1,
+    instructions: [ "" ]
 }
 
 @Injectable()

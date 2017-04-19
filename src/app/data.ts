@@ -135,7 +135,17 @@ export const roles: Role[] = [
         "name": "Abominable Sectaire",
         "image": "assets/cards/abominable_sectaire.png",
         "ownStatusIds": [],
-        "othersStatusIds": [ 8, 9 ]
+        "othersStatusIds": [ 8, 9 ],
+        "getInstructions": (i: number) => {
+            if (i === 0) {
+                return { priority: 1, instructions: [
+                    "L'abominable sectaire se réveille",
+                    "?",
+                    "L'abominable sectaire se rendort"
+                ]};
+            }
+            return { priority: 0, instructions: [] };
+        }
     },
     {
         "id": 1,
@@ -325,7 +335,20 @@ export const roles: Role[] = [
         "image": "assets/cards/sorciere.png",
         "ownStatusIds": [ 1, 2, 3, 4 ],
         "othersStatusIds": [],
-        "initialStatusIds": [ 1, 3 ]
+        "initialStatusIds": [ 1, 3 ],
+        "getInstructions": (i: number) => {
+            return { 
+                priority: 117, 
+                instructions: [
+                    "La sorcière se réveille",
+                    "Sorcière voici la cible des loups-garoux (ne pas montrer si potion blanche déjà utilisé ou si salv ou si ancien)",
+                    "Souhaites-tu utiliser ta potion de vie?",
+                    "Souhaites-tu utiliser ta potion de mort?",
+                    "Qui souhaites-tu tuer?",
+                    "Sorcière rendort toi"
+                ]
+            };
+        }
     },
     {
         "id": 28,
@@ -339,7 +362,17 @@ export const roles: Role[] = [
         "name": "Voleur",
         "image": "assets/cards/voleur.png",
         "ownStatusIds": [],
-        "othersStatusIds": []
+        "othersStatusIds": [],
+        "getInstructions": (i: number) => {
+            if (i === 1) {
+                return { priority: 1, instructions: [
+                    "Le voleur se réveille",
+                    "Voleur choisit une carte",
+                    "Le voleur se rendort"
+                ]};
+            }
+            return { priority: 0, instructions: [] };
+        }
     },
     {
         "id": 30,

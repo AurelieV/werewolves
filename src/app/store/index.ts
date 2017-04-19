@@ -7,6 +7,8 @@ import { players } from './reducers/players';
 import { roleIds } from './reducers/roleIds';
 import { gameState } from './reducers/gameState';
 import { noDistributedRoleIds } from './reducers/noDistributedRoleIds';
+import { nightNumber } from './reducers/nightNumber';
+import { instructions } from './reducers/instructions';
 
 export type GameState = "none" | "setRoles" | "setPlayers" | "attributeRoles" | "inProgress";
 export interface IAppState {
@@ -14,6 +16,8 @@ export interface IAppState {
     roleIds: number[];
     gameState: GameState;
     noDistributedRoleIds: number[];
+    nightNumber: number;
+    instructions: string[];
 };
 
 export const actions = {
@@ -21,12 +25,16 @@ export const actions = {
     SET_GAME_STATE: "SET GAME STATE",
     SET_PLAYERS: "SET PLAYERS",
     UPDATE_PLAYER: "UPDATE_PLAYER",
-    SET_NO_DISTRIBUTED_ROLES: "SET_NO_DISTRIBUTED_ROLES"
+    SET_NO_DISTRIBUTED_ROLES: "SET_NO_DISTRIBUTED_ROLES",
+    SET_NIGHT_NUMBER: "SET_NIGHT_NUMBER",
+    SET_INSTRUCTIONS: "SET_INSTRUCTIONS"
 } 
 
 export const rootReducer = combineReducers<IAppState>({
     players,
     roleIds,
     gameState,
-    noDistributedRoleIds
+    noDistributedRoleIds,
+    nightNumber,
+    instructions
 });

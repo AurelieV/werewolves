@@ -23,7 +23,7 @@ import { config } from "../config/firebase";
 // Store
 import { IAppState, rootReducer } from './store';
 
-export const currentVersion = "4.0";
+export const currentVersion = "6.0";
 
 @NgModule({
   declarations: [
@@ -52,7 +52,7 @@ export const currentVersion = "4.0";
 })
 export class AppModule {
     constructor(private ngRedux: NgRedux<IAppState>, private persist: PersistStoreService) {
-        const persistState = persist.getPersistState(); 
+        const persistState = persist.getPersistState();
         this.ngRedux.configureStore(rootReducer, persistState);
         persist.start();
         history.pushState("back", null, null); // for handle back button history has to be not empty

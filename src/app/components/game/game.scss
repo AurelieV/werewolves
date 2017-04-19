@@ -18,3 +18,24 @@
         * { opacity: 1; }
     }
 }
+
+md-toolbar.instructions {
+    position: fixed;
+    top: 60px;
+    z-index: 200;
+    display: flex;
+    .instruction {
+        flex: 1;
+        font-size: 12px;
+        word-wrap: break-word;
+        white-space: normal;
+    }
+    button {
+        margin-left: 10px;
+    }
+    padding-right: 5px;
+}
+
+.content {
+    padding-top: 120px;
+}

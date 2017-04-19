@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, TemplateRef, ChangeDetectorRef } from '@angular/core';
 import { NgRedux, select } from "@angular-redux/store";
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { MdDialog, MdDialogRef } from '@angular/material';
 
-import { Player, Role, Status } from '../../model';
+import { Player, Role, Status, OrderInstructions } from '../../model';
 import { IAppState, actions } from '../../store';
 import { RoleZoomComponent } from '../zoom';
 import { roles, statuses } from '../../data';
@@ -42,15 +42,66 @@ export class GameComponent implements OnInit, OnDestroy {
     private restartGameModalRef: MdDialogRef<any>;
     private subscriptions: Subscription[] = [];
 
-    constructor(private ngRedux: NgRedux<IAppState>, private dialog: MdDialog) {}
+    private isNight: boolean;
+    private currentMessage: string;
+    private nightNumber: number;
+    private instructions: string[] = [];
+
+    constructor(private ngRedux: NgRedux<IAppState>, private dialog: MdDialog, private cd: ChangeDetectorRef) {}
 
     ngOnInit() {
+        const state = this.ngRedux.getState();
+        this.noDistributedRoleIds = state.noDistributedRoleIds;
+        this.roleIds = state.roleIds;
+        this.availableStatuses = this.getAvailableStatuses();
         this.subscriptions.push(this.ngRedux.select<IAppState>().subscribe(state => {
-            this.noDistributedRoleIds = state.noDistributedRoleIds;
-            this.roleIds = state.roleIds;
-            this.availableStatuses = this.getAvailableStatuses();
             this.players = state.players.map(p => Object.assign({}, p, {actions: this.getActions(p)}));
         }));
+        this.subscriptions.push(this.ngRedux.select<number>("nightNumber").subscribe(i => {
+            this.setNightNumber(i);
+        }));
+        this.subscriptions.push(this.ngRedux.select<string[]>("instructions").subscribe(instructions => {
+            this.setInstructions(instructions);
+        }));
+    }
+
+    setInstructions(instructions: string[]) {
+        this.instructions = instructions;
+        if (instructions.length === 0) {
+            this.currentMessage = "C'est le jour";
+            if (!this.isNight) {
+                this.isNight = true;
+                this.ngRedux.dispatch({ type: actions.SET_NIGHT_NUMBER, payload: this.nightNumber + 1});
+            } else {
+                this.isNight = false;
+            }
+        } else {
+            this.currentMessage = instructions[0];
+            this.isNight = true;
+        }
+        this.cd.detectChanges();
+    }
+
+    setNightNumber(i: number) {
+        this.nightNumber = i;
+        let instructions: string[] = this.roleIds
+            .map(id => roles[id])
+            .map(role => role.getInstructions ? role.getInstructions(i) : { instructions: [], priority: 0})
+            .sort((a, b) => {
+                if (a === b) return 0;
+                return a < b ? -1 : 1;
+            })
+            .reduce((acc, val) => acc.concat(val.instructions), [])
+        ;
+        instructions = [ "Le village s'endort" ].concat(instructions);
+        instructions = instructions.concat("Le village se réveille");
+        
+        this.ngRedux.dispatch({ type: actions.SET_INSTRUCTIONS, payload: instructions});
+    }
+
+    next() {
+        const [first, ...others] = this.instructions;
+        this.ngRedux.dispatch({ type: actions.SET_INSTRUCTIONS, payload: others || [] });
     }
 
     openZoom(roleId: number, name: string) {
@@ -138,6 +189,7 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     closeGame() {
+        this.subscriptions.forEach(s => s.unsubscribe());
         this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "none" });
     }
 
@@ -146,6 +198,7 @@ export class GameComponent implements OnInit, OnDestroy {
         this.restartGameModalRef.afterClosed().subscribe(action => {
             if (action === "cancel") return;
             if (action === "not-save") {
+                this.subscriptions.forEach(s => s.unsubscribe());
                 this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "setRoles"});
                 return;
             }

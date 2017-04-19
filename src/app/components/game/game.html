@@ -1,5 +1,9 @@
 <md-toolbar class="header-bar" color="primary">
-    <span class="title">Game en cours</span>
+    <span class="title">
+        <span *ngIf="isNight">Nuit</span>
+        <span *ngIf="!isNight">Jour</span>
+        <span>{{nightNumber}}</span>
+    </span>
     <button md-icon-button [mdMenuTriggerFor]="headerMenu" class="menu-button">
         <md-icon>more_vert</md-icon>
     </button>
@@ -8,6 +12,10 @@
         <button md-menu-item (click)="restartGame()">Recommencer</button>
         <button md-menu-item (click)="saveGame()">Sauvegarder</button>
     </md-menu>
+</md-toolbar>
+<md-toolbar class="instructions" color="accent">
+    <div class="instruction">{{currentMessage}}</div>
+    <button md-icon-button (click)="next()"><md-icon>forward</md-icon></button>
 </md-toolbar>
 
 <div class="content">
