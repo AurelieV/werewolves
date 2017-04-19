@@ -143,8 +143,9 @@ export class GameComponent implements OnInit, OnDestroy {
 
     restartGame() {
         this.restartGameModalRef = this.dialog.open(this.restartGameTemplate);
-        this.restartGameModalRef.afterClosed().subscribe(save => {
-            if (!save) {
+        this.restartGameModalRef.afterClosed().subscribe(action => {
+            if (action === "cancel") return;
+            if (action === "not-save") {
                 this.ngRedux.dispatch({ type: actions.SET_GAME_STATE, payload: "setRoles"});
                 return;
             }

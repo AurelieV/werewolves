@@ -52,13 +52,14 @@
     </div>
     <div md-dialog-actions>
         <button md-button color="warn" (click)="saveGameModalRef.close()">Annuler</button>
-        <button md-button color="primary" (click)="saveGameModalRef.close(true)">Valider</button>
+        <button md-button color="primary" (click)="saveGameModalRef.close(true)">Sauvegarder</button>
     </div>
 </template>
 <template #restartGameTemplate>
     <h1 md-dialog-title>Voulez vous sauvegarder avant?</h1>
     <div md-dialog-actions>
-        <button md-button color="warn" (click)="restartGameModalRef.close()">Annuler</button>
-        <button md-button color="primary" (click)="restartGameModalRef.close(true)">Valider</button>
+        <button md-button color="warn" (click)="restartGameModalRef.close('cancel')">Annuler</button>
+        <button md-button color="warn" (click)="restartGameModalRef.close('not-save')">Not save</button>
+        <button md-button color="primary" (click)="restartGameModalRef.close('save')">Save</button>
     </div>
 </template>
