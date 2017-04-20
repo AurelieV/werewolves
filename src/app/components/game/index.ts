@@ -84,13 +84,23 @@ export class GameComponent implements OnInit, OnDestroy {
 
     setNightNumber(i: number) {
         this.nightNumber = i;
-        let instructions: string[] = this.players
+        let orderedInstructions = this.players
             .filter(player => !player.dead)
             .map(player => player.roleId)
             .filter((id, i, tab) => tab.indexOf(id) === i)
             .map(id => roles[id])
             .map(role => role.getInstructions ? role.getInstructions(i) : { instructions: [], priority: 0})
-            .sort((a, b) => {
+        ;
+        orderedInstructions = orderedInstructions.concat({
+            priority: 113,
+            instructions: [
+                "Les loups garous se réveillent",
+                "Loups garous désignez moi votre cible",
+                "Loups garous rendormez vous"
+            ]
+        });
+
+        let instructions: string[] = orderedInstructions.sort((a, b) => {
                 if (a === b) return 0;
                 return a < b ? -1 : 1;
             })
