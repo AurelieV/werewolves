@@ -99,13 +99,11 @@ export class GameComponent implements OnInit, OnDestroy {
                 "Loups garous rendormez vous"
             ]
         });
-
-        let instructions: string[] = orderedInstructions.sort((a, b) => {
-                if (a === b) return 0;
-                return a < b ? -1 : 1;
-            })
-            .reduce((acc, val) => acc.concat(val.instructions), [])
-        ;
+        orderedInstructions = orderedInstructions.sort((a, b) => {
+                if (a.priority === b.priority) return 0;
+                return a.priority > b.priority ? 1 : -1;
+        });
+        let instructions = orderedInstructions.reduce((acc, val) => acc.concat(val.instructions), []);
         instructions = [ "Le village s'endort" ].concat(instructions);
         instructions = instructions.concat("Le village se réveille");
         

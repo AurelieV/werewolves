@@ -1,6 +1,6 @@
 import { actions, GameState } from '../index';
 
-export function nightNumber(state: number = 1, action: any) {
+export function nightNumber(state: number = 0, action: any) {
   switch (action.type) {
     case actions.SET_NIGHT_NUMBER:
       return action.payload;
@@ -10,7 +10,7 @@ export function nightNumber(state: number = 1, action: any) {
         case "none":
         case "setRoles":
         case "setPlayers":
-          return 1;
+          return 0;
         default:
           return state;
       }

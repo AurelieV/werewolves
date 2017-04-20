@@ -1,6 +1,6 @@
 import { actions, GameState } from '../index';
 
-export function instructions(state: string[] = [ "" ], action: any) {
+export function instructions(state: string[] = [], action: any) {
   switch (action.type) {
     case actions.SET_INSTRUCTIONS:
       return action.payload;
@@ -10,7 +10,7 @@ export function instructions(state: string[] = [ "" ], action: any) {
         case "none":
         case "setRoles":
         case "setPlayers":
-          return [ "" ];
+          return [];
         default:
           return state;
       }
