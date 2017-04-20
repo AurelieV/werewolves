@@ -125,6 +125,7 @@ export class GameComponent implements OnInit, OnDestroy {
         zoom.componentInstance.role = roles[roleId];
         zoom.componentInstance.player = name;
         document.body.className += "open-zoom";
+        history.pushState("back", null, null); // for handle back button history has to be not empty
         const closeZoom: EventListener = e => {
             e.preventDefault();
             e.stopPropagation();
