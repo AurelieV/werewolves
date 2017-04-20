@@ -54,6 +54,10 @@ export class GameComponent implements OnInit, OnDestroy {
         this.noDistributedRoleIds = state.noDistributedRoleIds;
         this.roleIds = state.roleIds;
         this.availableStatuses = this.getAvailableStatuses();
+        this.instructions = state.instructions;
+        this.nightNumber = state.nightNumber;
+        this.isNight = state.instructions.length > 0;
+        this.currentMessage = this.instructions.length ? this.instructions[0] : "C'est le jour";
         this.subscriptions.push(this.ngRedux.select<IAppState>().subscribe(state => {
             this.players = state.players.map(p => Object.assign({}, p, {actions: this.getActions(p)}));
         }));
@@ -69,12 +73,7 @@ export class GameComponent implements OnInit, OnDestroy {
         this.instructions = instructions;
         if (instructions.length === 0) {
             this.currentMessage = "C'est le jour";
-            if (!this.isNight) {
-                this.isNight = true;
-                this.ngRedux.dispatch({ type: actions.SET_NIGHT_NUMBER, payload: this.nightNumber + 1});
-            } else {
-                this.isNight = false;
-            }
+            this.isNight = false;
         } else {
             this.currentMessage = instructions[0];
             this.isNight = true;
@@ -83,6 +82,7 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     setNightNumber(i: number) {
+        if (this.nightNumber === i) return;
         this.nightNumber = i;
         let orderedInstructions = this.players
             .filter(player => !player.dead)
@@ -114,7 +114,11 @@ export class GameComponent implements OnInit, OnDestroy {
 
     next() {
         const [first, ...others] = this.instructions;
-        this.ngRedux.dispatch({ type: actions.SET_INSTRUCTIONS, payload: others || [] });
+        if (!this.isNight) {
+            this.ngRedux.dispatch({ type: actions.SET_NIGHT_NUMBER, payload: this.nightNumber + 1});
+            return;
+        }
+       this.ngRedux.dispatch({ type: actions.SET_INSTRUCTIONS, payload: others || [] });
     }
 
     openZoom(roleId: number, name: string) {
