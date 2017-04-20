@@ -91,14 +91,32 @@ export class GameComponent implements OnInit, OnDestroy {
             .map(id => roles[id])
             .map(role => role.getInstructions ? role.getInstructions(i) : { instructions: [], priority: 0})
         ;
-        orderedInstructions = orderedInstructions.concat({
-            priority: 113,
-            instructions: [
-                "Les loups garous se réveillent",
-                "Loups garous désignez moi votre cible",
-                "Loups garous rendormez vous"
-            ]
-        });
+        orderedInstructions = orderedInstructions.concat([
+            {
+                priority: 140,
+                instructions: [
+                    "Les loups garous se réveillent",
+                    "Loups garous désignez moi votre cible"
+                ]
+            }, 
+            {
+                priority: 155,
+                instructions: [ "Loups garous rendormez vous" ]
+            }
+        ]);
+
+        // S'il y a des amoureux
+        const hasLovers = this.players.filter(player => !player.dead && player.statusIds.indexOf(0) > -1).length > 0;
+        if (hasLovers) {
+            orderedInstructions = orderedInstructions.concat({
+                priority: 80,
+                instructions: [
+                    "Les amoureux se réveillent",
+                    "Les amoureux se rendorment"
+                ]
+            });
+        }
+        
         orderedInstructions = orderedInstructions.sort((a, b) => {
                 if (a.priority === b.priority) return 0;
                 return a.priority > b.priority ? 1 : -1;

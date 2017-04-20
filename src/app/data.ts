@@ -137,11 +137,9 @@ export const roles: Role[] = [
         "ownStatusIds": [],
         "othersStatusIds": [ 8, 9 ],
         "getInstructions": (i: number) => {
-            if (i === 0) {
-                return { priority: 1, instructions: [
-                    "L'abominable sectaire se réveille",
-                    "?",
-                    "L'abominable sectaire se rendort"
+            if (i === 1) {
+                return { priority: 10, instructions: [
+                    "Voici comment le sectaire divise le village"
                 ]};
             }
             return { priority: 0, instructions: [] };
@@ -173,7 +171,17 @@ export const roles: Role[] = [
         "name": "Chamane",
         "image": "assets/cards/chamane.png",
         "ownStatusIds": [ 6 ],
-        "othersStatusIds": []
+        "othersStatusIds": [],
+        "getInstructions": (i: number) => {
+            return {
+                priority: 210,
+                instructions: [
+                    "Le chamane se réveille",
+                    "Souhaites tu faire une séance. Si oui, désigne moi ta cible et une carte",
+                    "Le chamane se rendort"
+                ]
+            }
+        }
     },
     {
         "id": 5,
@@ -194,7 +202,21 @@ export const roles: Role[] = [
         "name": "Chien-Loup",
         "image": "assets/cards/chien_loup.png",
         "ownStatusIds": [ 7 ],
-        "othersStatusIds": []
+        "othersStatusIds": [],
+        "getInstructions": (i: number) => {
+            if (i === 1) {
+                return {
+                    priority: 30,
+                    instructions: [
+                        "Le chien loup se réveille",
+                        "Le chien loup choisit son camp",
+                        "Le chien loup se rendort"
+                    ]
+                }
+            }
+
+            return { priority: 0, instructions: [] };
+        }
     },
     {
         "id": 8,
@@ -208,7 +230,17 @@ export const roles: Role[] = [
         "name": "Corbeau",
         "image": "assets/cards/corbeau.png",
         "ownStatusIds": [],
-        "othersStatusIds": [ 10 ]
+        "othersStatusIds": [ 10 ],
+        "getInstructions": (i: number) => {
+            return {
+                priority: 200,
+                instructions: [
+                    "Le corbeau se réveille",
+                    "Désigne moi une cible",
+                    "Le corbeau se rendort"
+                ]
+            }
+        }
     },
     {
         "id": 10,
@@ -216,27 +248,77 @@ export const roles: Role[] = [
         "image": "assets/cards/cupidon.png",
         "ownStatusIds": [],
         "othersStatusIds": [ 0 ],
+        "getInstructions": (i: number) => {
+            if (i === 1) {
+                return {
+                    priority: 50,
+                    instructions: [
+                        "Cupidon se réveille",
+                        "Cupidon choisit les amoureux",
+                        "Il faut taper sur les épaules des amoureux",
+                        "Cupidon se rendort",
+                        "Les amoureux se réveillent",
+                        "Les amoureux se rendorment"
+                    ]
+                };
+            }
+
+            return { priority: 0, instructions: [] };
+        }
     },
     {
         "id": 11,
         "name": "Deux soeurs",
         "image": "assets/cards/deux_soeurs.png",
         "ownStatusIds": [],
-        "othersStatusIds": []
+        "othersStatusIds": [],
+        "getInstructions": (i: number) => {
+            return {
+                priority: 90,
+                instructions: [
+                    "Les deux soeurs se réveillent",
+                    "Les deux soeurs se rendorment"
+                ]
+            }
+        }
     },
     {
         "id": 12,
         "name": "Enfant sauvage",
         "image": "assets/cards/enfant_sauvage.png",
         "ownStatusIds": [ 7 ],
-        "othersStatusIds": [ 11 ]
+        "othersStatusIds": [ 11 ],
+        "getInstructions": (i: number) => {
+            if (i === 1) {
+                return {
+                    priority: 40,
+                    instructions: [
+                        "L'enfant sauvage se réveille",
+                        "L'enfant sauvage choisit son mentor",
+                        "L'enfant sauvage se rendort"
+                    ]
+                }
+            }
+
+            return { priority: 0, instructions: [] };
+        }
     },
     {
         "id": 13,
         "name": "Grand méchant loup",
         "image": "assets/cards/grand_mechant_loup.png",
         "ownStatusIds": [ 6 ],
-        "othersStatusIds": []
+        "othersStatusIds": [],
+        "getInstructions": (i: number) => {
+            return {
+                priority: 160,
+                instructions: [
+                    "Grand méchant loup se réveille",
+                    "Grand méchant loup, désigne une cible 2",
+                    "Grand méchant loup se rendort"
+                ]
+            }
+        }
     },
     {
         "id": 14,
@@ -250,28 +332,80 @@ export const roles: Role[] = [
         "name": "Infame père des loups",
         "image": "assets/cards/infame_pere_loups.png",
         "ownStatusIds": [ 6 ],
-        "othersStatusIds": [ 7 ]
+        "othersStatusIds": [ 7 ],
+        "getInstructions": (i: number) => {
+            return {
+                priority: 150,
+                instructions: [
+                    "Le père des loups se réveille",
+                    "Veux tu convertir la cible du jour?",
+                    "Je vais toucher l'épaule de la personne converti",
+                    "La personne se réveille"
+                ]
+            }
+        }
     },
     {
         "id": 16,
         "name": "Joueur de flûte",
         "image": "assets/cards/joueur_flute.png",
         "ownStatusIds": [],
-        "othersStatusIds": [ 13 ]
+        "othersStatusIds": [ 13 ],
+        "getInstructions": (i: number) => {
+            return {
+                priority: 190,
+                instructions: [
+                    "Le joueur de flute se réveille",
+                    "Choisi 1 ou 2 personnes",
+                    "Taper sur l'épaule des personnes",
+                    "Le joueur de flute se rendort",
+                    "Les envoutés se réveillent",
+                    "Les envoutés se rendorment"
+                ]
+            }
+        }
+        
     },
     {
         "id": 17,
         "name": "Juge bègue",
         "image": "assets/cards/juge_begue.png",
         "ownStatusIds": [ 6 ],
-        "othersStatusIds": []
+        "othersStatusIds": [],
+        "getInstructions": (i: number) => {
+            if (i === 1) {
+                return { 
+                priority: 25, 
+                instructions: [
+                    "Le juge bègue se réveille",
+                    "Le juge bègue donne son signe",
+                    "Le juge bègue se rendort"
+                ]
+            };
+            }
+            
+        }
     },
     {
         "id": 18,
         "name": "Loup garou blanc",
         "image": "assets/cards/loup_garou_blanc.png",
         "ownStatusIds": [],
-        "othersStatusIds": []
+        "othersStatusIds": [],
+        "getInstructions": (i: number) => {
+            if (i % 2 === 0) {
+                return {
+                    priority: 170,
+                    instructions: [
+                        "Le loup garou blanc se réveille",
+                        "Veux tu tuer un de tes compères? Lequel?",
+                        "Le loup garou blanc se rendort"
+                    ]
+                }
+            } else {
+                return { priority: 0, instructions: [] };
+            }
+        }
     },
     {
         "id": 19,
@@ -285,7 +419,15 @@ export const roles: Role[] = [
         "name": "Montreur d'ours",
         "image": "assets/cards/montreur_ours.png",
         "ownStatusIds": [],
-        "othersStatusIds": []
+        "othersStatusIds": [],
+        "getInstructions": (i: number) => {
+            return {
+                priority: 70,
+                instructions: [
+                    "Vérifier sur l'ours grogne"
+                ]
+            }
+        }
     },
     {
         "id": 21,
@@ -306,14 +448,34 @@ export const roles: Role[] = [
         "name": "Renard",
         "image": "assets/cards/renard.png",
         "ownStatusIds": [ 6 ],
-        "othersStatusIds": []
+        "othersStatusIds": [],
+        "getInstructions": (i: number) => {
+            return {
+                priority: 110,
+                instructions: [
+                    "Le renard se réveille",
+                    "Le renard désigne trois personnes",
+                    "Le renard se rendort"
+                ]
+            }
+        }
     },
     {
         "id": 24,
         "name": "Salvateur",
         "image": "assets/cards/salvateur.png",
         "ownStatusIds": [],
-        "othersStatusIds": []
+        "othersStatusIds": [],
+        "getInstructions": (i: number) => {
+            return {
+                priority: 120,
+                instructions: [
+                    "Le salvateur se réveille",
+                    "Salvateur désigne moi la personne que tu veux protéger",
+                    "Le salvateur se rendort"
+                ]
+            }
+        }
     },
     {
         "id": 25,
@@ -338,7 +500,7 @@ export const roles: Role[] = [
         "initialStatusIds": [ 1, 3 ],
         "getInstructions": (i: number) => {
             return { 
-                priority: 117, 
+                priority: 180, 
                 instructions: [
                     "La sorcière se réveille",
                     "Sorcière voici la cible des loups-garoux (ne pas montrer si potion blanche déjà utilisé ou si salv ou si ancien)",
@@ -355,7 +517,16 @@ export const roles: Role[] = [
         "name": "Trois frères",
         "image": "assets/cards/trois_freres.png",
         "ownStatusIds": [],
-        "othersStatusIds": []
+        "othersStatusIds": [],
+        "getInstructions": (i: number) => {
+            return {
+                priority: 100,
+                instructions: [
+                    "Les trois frères se réveillent",
+                    "Les trois frères se rendorment"
+                ]
+            }
+        }
     },
     {
         "id": 29,
@@ -365,7 +536,7 @@ export const roles: Role[] = [
         "othersStatusIds": [],
         "getInstructions": (i: number) => {
             if (i === 1) {
-                return { priority: 1, instructions: [
+                return { priority: 20, instructions: [
                     "Le voleur se réveille",
                     "Voleur choisit une carte",
                     "Le voleur se rendort"
@@ -379,6 +550,16 @@ export const roles: Role[] = [
         "name": "Voyante",
         "image": "assets/cards/voyante.jpg",
         "ownStatusIds": [],
-        "othersStatusIds": []
+        "othersStatusIds": [],
+        "getInstructions": (i: number) => {
+            return {
+                priority: 130,
+                instructions: [
+                    "La voyante se réveille",
+                    "Voyante montre moi la personne que tu veux connaitre",
+                    "La voyante se rendort"
+                ]
+            }
+        }
     }
 ];
