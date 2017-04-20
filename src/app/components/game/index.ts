@@ -84,7 +84,10 @@ export class GameComponent implements OnInit, OnDestroy {
 
     setNightNumber(i: number) {
         this.nightNumber = i;
-        let instructions: string[] = this.roleIds
+        let instructions: string[] = this.players
+            .filter(player => !player.dead)
+            .map(player => player.roleId)
+            .filter((id, i, tab) => tab.indexOf(id) === i)
             .map(id => roles[id])
             .map(role => role.getInstructions ? role.getInstructions(i) : { instructions: [], priority: 0})
             .sort((a, b) => {
