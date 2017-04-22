@@ -87,6 +87,7 @@ export class GameComponent implements OnInit, OnDestroy {
         let orderedInstructions = this.players
             .filter(player => !player.dead)
             .map(player => player.roleId)
+            .concat(this.noDistributedRoleIds)
             .filter((id, i, tab) => tab.indexOf(id) === i)
             .map(id => roles[id])
             .map(role => role.getInstructions ? role.getInstructions(i) : { instructions: [], priority: 0})
