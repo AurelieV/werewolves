@@ -96,13 +96,8 @@ export class GameComponent implements OnInit, OnDestroy {
             {
                 priority: 140,
                 instructions: [
-                    "Les loups garous se réveillent",
-                    "Loups garous désignez moi votre cible"
+                    "Loups garous"
                 ]
-            }, 
-            {
-                priority: 155,
-                instructions: [ "Loups garous rendormez vous" ]
             }
         ]);
 
@@ -112,8 +107,7 @@ export class GameComponent implements OnInit, OnDestroy {
             orderedInstructions = orderedInstructions.concat({
                 priority: 80,
                 instructions: [
-                    "Les amoureux se réveillent",
-                    "Les amoureux se rendorment"
+                    "Les amoureux"
                 ]
             });
         }

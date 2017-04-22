@@ -176,9 +176,7 @@ export const roles: Role[] = [
             return {
                 priority: 210,
                 instructions: [
-                    "Le chamane se réveille",
-                    "Souhaites tu faire une séance. Si oui, désigne moi ta cible et une carte",
-                    "Le chamane se rendort"
+                    "Le chamane"
                 ]
             }
         }
@@ -208,9 +206,7 @@ export const roles: Role[] = [
                 return {
                     priority: 30,
                     instructions: [
-                        "Le chien loup se réveille",
-                        "Le chien loup choisit son camp",
-                        "Le chien loup se rendort"
+                        "Le chien loup"
                     ]
                 }
             }
@@ -235,9 +231,7 @@ export const roles: Role[] = [
             return {
                 priority: 200,
                 instructions: [
-                    "Le corbeau se réveille",
-                    "Désigne moi une cible",
-                    "Le corbeau se rendort"
+                    "Le corbeau"
                 ]
             }
         }
@@ -253,12 +247,7 @@ export const roles: Role[] = [
                 return {
                     priority: 50,
                     instructions: [
-                        "Cupidon se réveille",
-                        "Cupidon choisit les amoureux",
-                        "Il faut taper sur les épaules des amoureux",
-                        "Cupidon se rendort",
-                        "Les amoureux se réveillent",
-                        "Les amoureux se rendorment"
+                        "Cupidon fait un couple"
                     ]
                 };
             }
@@ -276,8 +265,7 @@ export const roles: Role[] = [
             return {
                 priority: 90,
                 instructions: [
-                    "Les deux soeurs se réveillent",
-                    "Les deux soeurs se rendorment"
+                    "Les deux soeurs"
                 ]
             }
         }
@@ -293,9 +281,7 @@ export const roles: Role[] = [
                 return {
                     priority: 40,
                     instructions: [
-                        "L'enfant sauvage se réveille",
-                        "L'enfant sauvage choisit son mentor",
-                        "L'enfant sauvage se rendort"
+                        "L'enfant sauvage choisit son mentor"
                     ]
                 }
             }
@@ -313,9 +299,7 @@ export const roles: Role[] = [
             return {
                 priority: 160,
                 instructions: [
-                    "Grand méchant loup se réveille",
-                    "Grand méchant loup, désigne une cible 2",
-                    "Grand méchant loup se rendort"
+                    "Grand méchant loup"
                 ]
             }
         }
@@ -337,10 +321,7 @@ export const roles: Role[] = [
             return {
                 priority: 150,
                 instructions: [
-                    "Le père des loups se réveille",
-                    "Veux tu convertir la cible du jour?",
-                    "Je vais toucher l'épaule de la personne converti",
-                    "La personne se réveille"
+                    "L'infame père des loups"
                 ]
             }
         }
@@ -355,12 +336,7 @@ export const roles: Role[] = [
             return {
                 priority: 190,
                 instructions: [
-                    "Le joueur de flute se réveille",
-                    "Choisi 1 ou 2 personnes",
-                    "Taper sur l'épaule des personnes",
-                    "Le joueur de flute se rendort",
-                    "Les envoutés se réveillent",
-                    "Les envoutés se rendorment"
+                    "Le joueur de flute et les envoutés"
                 ]
             }
         }
@@ -377,9 +353,7 @@ export const roles: Role[] = [
                 return { 
                 priority: 25, 
                 instructions: [
-                    "Le juge bègue se réveille",
-                    "Le juge bègue donne son signe",
-                    "Le juge bègue se rendort"
+                    "Le juge bègue donne son signe"
                 ]
             };
             }
@@ -397,9 +371,7 @@ export const roles: Role[] = [
                 return {
                     priority: 170,
                     instructions: [
-                        "Le loup garou blanc se réveille",
-                        "Veux tu tuer un de tes compères? Lequel?",
-                        "Le loup garou blanc se rendort"
+                        "Le loup garou blanc peut tuer un loup"
                     ]
                 }
             } else {
@@ -424,7 +396,7 @@ export const roles: Role[] = [
             return {
                 priority: 70,
                 instructions: [
-                    "Vérifier sur l'ours grogne"
+                    "Vérifier si l'ours grogne"
                 ]
             }
         }
@@ -453,9 +425,7 @@ export const roles: Role[] = [
             return {
                 priority: 110,
                 instructions: [
-                    "Le renard se réveille",
-                    "Le renard désigne trois personnes",
-                    "Le renard se rendort"
+                    "Le renard"
                 ]
             }
         }
@@ -470,9 +440,7 @@ export const roles: Role[] = [
             return {
                 priority: 120,
                 instructions: [
-                    "Le salvateur se réveille",
-                    "Salvateur désigne moi la personne que tu veux protéger",
-                    "Le salvateur se rendort"
+                    "Le salvateur"
                 ]
             }
         }
@@ -502,12 +470,7 @@ export const roles: Role[] = [
             return { 
                 priority: 180, 
                 instructions: [
-                    "La sorcière se réveille",
-                    "Sorcière voici la cible des loups-garoux (ne pas montrer si potion blanche déjà utilisé ou si salv ou si ancien)",
-                    "Souhaites-tu utiliser ta potion de vie?",
-                    "Souhaites-tu utiliser ta potion de mort?",
-                    "Qui souhaites-tu tuer?",
-                    "Sorcière rendort toi"
+                    "La sorcière"
                 ]
             };
         }
@@ -522,8 +485,7 @@ export const roles: Role[] = [
             return {
                 priority: 100,
                 instructions: [
-                    "Les trois frères se réveillent",
-                    "Les trois frères se rendorment"
+                    "Les trois frères"
                 ]
             }
         }
@@ -537,9 +499,7 @@ export const roles: Role[] = [
         "getInstructions": (i: number) => {
             if (i === 1) {
                 return { priority: 20, instructions: [
-                    "Le voleur se réveille",
-                    "Voleur choisit une carte",
-                    "Le voleur se rendort"
+                    "Voleur choisit une carte"
                 ]};
             }
             return { priority: 0, instructions: [] };
@@ -555,9 +515,7 @@ export const roles: Role[] = [
             return {
                 priority: 130,
                 instructions: [
-                    "La voyante se réveille",
-                    "Voyante montre moi la personne que tu veux connaitre",
-                    "La voyante se rendort"
+                    "La voyante"
                 ]
             }
         }
